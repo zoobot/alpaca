@@ -18,7 +18,7 @@ export default class Login extends React.Component {
   }
 
   sendCredentials() {
-    axios.post('/users', {
+    axios.post('/auth/login', {
       email: this.state.email,
       password: this.state.password,
     });

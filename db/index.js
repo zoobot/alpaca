@@ -6,8 +6,6 @@ var User = db.define('User', {
   password: Sequelize.STRING,
   firstname: Sequelize.STRING,
   lastname: Sequelize.STRING
-}, {
-  // timestamps: false // this will deactivate the timestamp columns
 });
 
 var Question = db.define('Question', {

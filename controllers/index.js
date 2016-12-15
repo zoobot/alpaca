@@ -49,20 +49,13 @@ module.exports = {
     }
   },
   user: {
-    // in signing page, GET request will check for username and return pass
-    get: function (req, res) {
+    get: function (username, callback) {
       db.User
-        .find({ where: { username: req.body.username } })
-        .then(function(err, userReturn) {
-          if (!userReturn) {
-            console.log('No user with username "' + req.body.username + '" was found.');
-          } else {
-            console.log('Hello ' + userReturn.username + '!');
-            console.log('All attributes of john:', userReturn.get());
-          }
+        .find({ where: { username: username} })
+        .then(function(err, result) {
+          callback(err, result);
         });
     },
-    // in sign-up page, POST request will create user entry into database
     post: function (req, res) {
       db.User.create({
         username: req.body.username,
