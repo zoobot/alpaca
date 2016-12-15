@@ -25,18 +25,10 @@ app.use(require('express-session')({
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.use('local-login', new LocalStrategy({
-  usernameField: 'email',
-  passwordField: 'password'
-},
-function(username, password, done) {
-
+passport.use('local-login', new LocalStrategy(function(username, password, done) {
 }));
 
-passport.use('local-signup', new LocalStrategy({
-  usernameField: 'email',
-  passwordField: 'password'
-}, function(username, password, done) {
+passport.use('local-signup', new LocalStrategy(function(username, password, done) {
   db.User
     .find( {where: {username: username}} )
     .then( function(err, result) {
@@ -49,9 +41,7 @@ passport.use('local-signup', new LocalStrategy({
 router.get('/questions', controller.questions.get);
 router.post('/questions', controller.questions.post);
 router.post('/auth/login', passport.authenticate('local-login'));
-router.post('/auth/signup', function(req, res) {
-  console.log('REQUEST', req.body);
-});
+router.post('/auth/signup', controller.user.post);
 
 // port
 app.set('port', 1337);
