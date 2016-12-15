@@ -8,12 +8,19 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const db = require('./db');
 const controller = require('./controllers');
-
+const cookieParser = require('cookie-parser')
 // config - middleware
-app.use(morgan('dev'));
+
 app.use(parser.json());
-app.use('/', router);
+app.use(morgan('dev'));
+app.use(cookieParser())
 app.use(express.static('public'));
+app.use('/', router);
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+
 app.use(require('express-session')({
   secret: 'penguins_in_the_mist',
   resave: false,
@@ -22,19 +29,28 @@ app.use(require('express-session')({
     maxAge: 6.048e8
   }
 }));
-app.use(passport.initialize());
-app.use(passport.session());
+
+
+
 
 passport.use('local-login', new LocalStrategy(function(username, password, done) {
-}));
-
-passport.use('local-signup', new LocalStrategy(function(username, password, done) {
   db.User
-    .find( {where: {username: username}} )
-    .then( function(err, result) {
-      if (err) { console.error(err); }
+    .find({where: {username: username}})
+    .then(function(results) {
+      if (!results) {
+        // console.log('No results',results)
+        return done(null, false);
+      }
+      if (!(controller.user.checkPassword(results.dataValues.password, password))) {
+        console.log('wrong password');
+        return done(null, false);
+      }
+
+      return done(null, results.dataValues);
+      console.log('successful login');
     });
 }));
+
 
 // routes
 // Connect controller methods to their corresponding routes
@@ -43,6 +59,16 @@ router.post('/questions', controller.questions.post);
 router.post('/auth/login', passport.authenticate('local-login'));
 router.post('/auth/signup', controller.user.post);
 
+passport.serializeUser(function(user, done) {
+  done(null, user.username);
+});
+passport.deserializeUser(function(username, done) {
+  db.User.find({where: {username: username}})
+    .then(function(results) {
+      if (!results) return done(new Error('Invalid user'));
+      return done(null, results);
+    });
+});
 // port
 app.set('port', 1337);
 // If we are being run directly, run the server.

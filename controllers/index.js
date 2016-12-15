@@ -59,7 +59,7 @@ module.exports = {
         });
     },
     post: function (req, res) {
-      console.log('req.body', req.body);
+      // console.log('req.body', req.body);
       db.User
         .find({where: {username: req.body.username}})
         .then(function(result) {
@@ -80,6 +80,9 @@ module.exports = {
             });
           }
         });
+    },
+    checkPassword: function (password, attemptedPassword) {
+      return bcrypt.compareSync(attemptedPassword, password);
     }
   },
   results: {
