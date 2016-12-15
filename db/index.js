@@ -11,7 +11,7 @@ var User = db.define('user', {
 var Test = db.define('test', {
   test: Sequelize.STRING,
   category: Sequelize.STRING,
-  public: Sequelize.INTEGER
+  public: Sequelize.BOOLEAN
 });
 
 var Question = db.define('question', {
@@ -38,6 +38,11 @@ Result.belongsTo(Test);
 //This will add methods getUsers, setUsers, addUsers to Test, and getTests, setTests and addTest to User.
 User.belongsToMany(Test, {through: UsersTests});
 Test.belongsToMany(User, {through: UsersTests});
+
+// Make it so that you can add to a test that you saved.
+Test.belongsTo(User);
+Question.belongsTo(User);
+
 
 // If we are adding columns or otherwise changing the schema
 // we can add {force: true} inside .sync to drop the tables
