@@ -2,7 +2,7 @@ var Sequelize = require('sequelize');
 var db = new Sequelize('crashcourse', 'root', '');
 
 var User = db.define('User', {
-  username: Sequelize.STRING,
+  username: { type: Sequelize.STRING, field: 'username', unique: 'username' },
   password: Sequelize.STRING,
   firstname: Sequelize.STRING,
   lastname: Sequelize.STRING
