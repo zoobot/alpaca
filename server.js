@@ -28,14 +28,6 @@ app.use(passport.session());
 passport.use('local-login', new LocalStrategy(function(username, password, done) {
 }));
 
-passport.use('local-signup', new LocalStrategy(function(username, password, done) {
-  db.User
-    .find( {where: {username: username}} )
-    .then( function(err, result) {
-      if (err) { console.error(err); }
-    });
-}));
-
 // routes
 // Connect controller methods to their corresponding routes
 router.get('/questions', controller.questions.get);
