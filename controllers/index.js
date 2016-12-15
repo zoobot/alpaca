@@ -1,4 +1,6 @@
 var db = require('../db');
+var bcrypt = require('bcrypt');
+var saltRounds = 10;
 
 module.exports = {
   // in quiz page, GET request will return object of all quiz Q's and A's
@@ -57,15 +59,27 @@ module.exports = {
         });
     },
     post: function (req, res) {
-      db.User.create({
-        username: req.body.username,
-        password: generatePasswordHash(req.body.password),
-        firstname: req.body.firstname,
-        lastname: req.body.lastname,
-        email: req.body.email
-      }).then(function(user) {
-        res.sendStatus(201);
-      });
+      console.log('req.body', req.body);
+      db.User
+        .find({where: {username: req.body.username}})
+        .then(function(result) {
+          if (!result) {
+            bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
+              if (err) {
+                console.log(err);
+              }
+              db.User.create({
+                username: req.body.username,
+                password: hash,
+                firstname: req.body.firstname,
+                lastname: req.body.lastname,
+              }).then(function(user) {
+                console.log('login user', user);
+                res.sendStatus(201);
+              });
+            });
+          }
+        });
     }
   },
   results: {
