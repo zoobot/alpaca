@@ -1,31 +1,59 @@
+// setup - dependencies
+const express = require('express');
+const app = express();
+const router = require('express').Router();
+const morgan = require('morgan');
+const parser = require('body-parser');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const db = require('./db');
+const controller = require('./controllers');
 
-// Setup  ========================
-var express = require('express');
-var app = express();
-var db = require('./db');
-var axios = require('axios');
-var morgan = require('morgan');
-var parser = require('body-parser');
-var controller = require('./controllers');
-var router = require('express').Router();
+// config - middleware
+app.use(morgan('dev'));
+app.use(parser.json());
+app.use('/', router);
+app.use(express.static('public'));
+app.use(require('express-session')({
+  secret: 'penguins_in_the_mist',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 6.048e8
+  }
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
+passport.use('local-login', new LocalStrategy({
+  usernameField: 'email',
+  passwordField: 'password'
+},
+function(username, password, done) {
 
-// Configuration  ========================
-app.use(express.static('public')); // Serve the client files
-app.use(morgan('dev')); //logging
-app.use(parser.json()); //parsing
-app.use('/', router); // Set up our routes
+}));
 
+passport.use('local-signup', new LocalStrategy({
+  usernameField: 'email',
+  passwordField: 'password'
+}, function(username, password, done) {
+  db.User
+    .find( {where: {username: username}} )
+    .then( function(err, result) {
+      if (err) { console.error(err); }
+    });
+}));
 
-// Routes ========================
+// routes
 // Connect controller methods to their corresponding routes
 router.get('/questions', controller.questions.get);
 router.post('/questions', controller.questions.post);
-//router.get('/users', controller.users.get);
-//router.post('/users', controller.users.post);
+router.post('/auth/login', passport.authenticate('local-login'));
+router.post('/auth/signup', function(req, res) {
+  console.log('REQUEST', req.body);
+});
 
-
-// Port ========================
+// port
 app.set('port', 1337);
 // If we are being run directly, run the server.
 if (!module.parent) {
@@ -33,7 +61,5 @@ if (!module.parent) {
   console.log('Listening on', app.get('port'));
 }
 
-
-// Module exports ========================
 module.exports.app = app;
 module.exports = router;
