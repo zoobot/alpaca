@@ -54,8 +54,8 @@ module.exports = {
     get: function (username, callback) {
       db.User
         .find({ where: { username: username} })
-        .then(function(err, result) {
-          callback(err, result);
+        .then(function(result) {
+          callback(result);
         });
     },
     post: function (req, res) {

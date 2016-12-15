@@ -15,7 +15,6 @@ export default class SignUp extends React.Component {
   }
 
   sendCredentials() {
-    console.log('SEND', this.state);
     axios.post('/auth/signup', {
       firstname: this.state.firstname,
       lastname: this.state.lastname,
