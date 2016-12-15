@@ -15,6 +15,7 @@ export default class PrebuiltQuiz extends React.Component {
       wrong3: '',
       questions: [],
       answers: [],
+      randomAnswers: [],
       index: null,
       timeCount: 15, // used for countdown
       correctAns: 0, // number of correct and wrong answer submissions for percent
@@ -153,7 +154,8 @@ export default class PrebuiltQuiz extends React.Component {
         wrong1: questions[index].wrong1,
         wrong2: questions[index].wrong2,
         wrong3: questions[index].wrong3,
-        answers: this.state.answers.concat(questions[index].correct, questions[index].wrong1, questions[index].wrong2, questions[index].wrong3)
+        answers: this.state.answers.concat(questions[index].correct, questions[index].wrong1, questions[index].wrong2, questions[index].wrong3),
+        randomAnswers: this.shuffleAnswers([questions[index].correct, questions[index].wrong1, questions[index].wrong2, questions[index].wrong3])
       });
     }
   }
@@ -182,10 +184,20 @@ export default class PrebuiltQuiz extends React.Component {
 
   }
 
+  shuffleAnswers(array) {
+    for (let i = array.length-1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i+1));
+      const temp = array[i];
+      array[i] = array[j];
+      array[j] = temp;
+
+    }
+    return array;
+  }
+
           // ternary is used in render to render the completed page if this.state.CompletedQuiz is true :)
           // ternary is also used to display the Timer only after a test has been selected
   render() {
-
     return (
       <div className="App">
       {
@@ -205,7 +217,7 @@ export default class PrebuiltQuiz extends React.Component {
               enter={{animation: 'transition.slideDownBigOut', duration: 20000, opacity: [1, 1], translateY: 200}}
               leave={{opacity: [1, 1]}}
             >
-              {this.state.answers.map(option => <button onClick={this.handleClick.bind(this)} className={`answer btn btn-lg ${option}`}>{option}</button> )}
+              {this.state.randomAnswers.map(option => <button onClick={this.handleClick.bind(this)} className={`answer btn btn-lg ${option}`}>{option}</button> )}
             </VelocityTransitionGroup>
 
             <div className="container"></div>
