@@ -15,16 +15,13 @@ export default class CustomQuiz extends React.Component {
       testName: '',
       currQuesList: [], // populated with data from server in this.getTestNameCurrentQuestions
     };
+
+    this.clearForm = this.clearForm.bind(this);
   }
 
   // this actually pushes the current values to the server using a post request
   // with axios
   sendCustomTemplate(e) {
-    //e.preventDefault(); // use prevent default to stop page from clearing form
-                          // to hopefully keep 'testName' in the top input field,
-                          // but there was an issue when setting value attribute,
-                          // couldn't input or change the inputs after value was
-                          // set this way
     axios.post('/questions', {
       name: this.state.question,
       correct: this.state.answer,
@@ -34,16 +31,17 @@ export default class CustomQuiz extends React.Component {
       testName: this.state.testName,
     })
     .then(() => {
-      // clear forms
-      this.setState({
-        name: '',
-        correct: '',
-        wrong1: '',
-        wrong2: '',
-        wrong3: ''
-      });
+      this.clearForm();
     });
     this.getTestNameCurrentQuestions();
+  }
+
+  clearForm() {
+    this.refs.question.value = '';
+    this.refs.correctAnswer.value = '';
+    this.refs.wrong1.value = '';
+    this.refs.wrong2.value = '';
+    this.refs.wrong3.value = '';
   }
 
   // the next *handle* functions to the work of updating state variables as
@@ -148,47 +146,48 @@ export default class CustomQuiz extends React.Component {
                 <div className="form-group row">
                   <label className="col-xs-4 col-form-label" htmlFor="question">Question</label>
                   <div className="col-xs-8">
-                    <input name="question" type="text" className="form-control" placeholder="Enter a question" onChange={this.handleQuestion.bind(this)}></input>
+                    <input name="question" type="text" ref="question" className="form-control" placeholder="Enter a question" onChange={this.handleQuestion.bind(this)}></input>
                   </div>
                 </div>
 
                 <div className="form-group row">
                   <label className="col-xs-4 col-form-label" htmlFor="answer">Correct</label>
                   <div className="col-xs-8">
-                    <input name="answer" type="text" className="form-control" placeholder="Enter an answer" onChange={this.handleCorrentAnswer.bind(this)}></input>
+                    <input name="answer" type="text" ref="correctAnswer" className="form-control" placeholder="Enter an answer" onChange={this.handleCorrentAnswer.bind(this)}></input>
                   </div>
                 </div>
 
                 <div className="form-group row">
                   <label className="col-xs-4 col-form-label" htmlFor="option1">Wrong 1</label>
                   <div className="col-xs-8">
-                    <input name="option1" type="text" className="form-control" placeholder="Enter an answer" onChange={this.handleWrong1.bind(this)}></input>
+                    <input name="option1" type="text" ref="wrong1" className="form-control" placeholder="Enter an answer" onChange={this.handleWrong1.bind(this)}></input>
                   </div>
                 </div>
 
                 <div className="form-group row">
                   <label className="col-xs-4 col-form-label" htmlFor="option2">Wrong 2</label>
                   <div className="col-xs-8">
-                    <input name="option2" type="text" className="form-control" placeholder="Enter an answer" onChange={this.handleWrong2.bind(this)}></input>
+                    <input name="option2" type="text" ref="wrong2" className="form-control" placeholder="Enter an answer" onChange={this.handleWrong2.bind(this)}></input>
                   </div>
                 </div>
 
                 <div className="form-group row">
                   <label className="col-xs-4 col-form-label" htmlFor="option3">Wrong 3</label>
                   <div className="col-xs-8">
-                    <input name="option3" type="text" className="form-control" placeholder="Enter an answer" onChange={this.handleWrong3.bind(this)}></input>
+                    <input name="option3" type="text" ref="wrong3" className="form-control" placeholder="Enter an answer" onChange={this.handleWrong3.bind(this)}></input>
                   </div>
                 </div>
 
-                <button className="btn btn-sm btn-primary" type="submit" onClick={this.sendCustomTemplate.bind(this)}>Submit</button>
+                <button className="btn btn-sm btn-primary" type="button" onClick={this.sendCustomTemplate.bind(this)}>Submit Question</button>
               </form>
             </div>
 
             <div className='col-md-6'>
               <div>
                 <h3>Click questions below to delete them once created!</h3>
-                {this.state.currQuesList.map(option =>
+                {this.state.currQuesList.map((option, i) =>
                   <button
+                    key={i}
                     onClick={this.handleRemove.bind(this)}
                     className={`answer btn btn-lg ${option}`}>{option}
                   </button> )}
