@@ -8,6 +8,7 @@ import CustomQuiz from './pages/CustomQuiz';
 import SignUp from './pages/SignUp';
 import Login from './pages/Login';
 import PrebuiltQuiz from './pages/PrebuiltQuiz';
+import PublicQuizList from './pages/PublicQuizList';
 import Layout from './pages/Layout';
 import Homepage from './pages/Homepage';
 import Settings from './pages/Settings';
@@ -20,6 +21,7 @@ ReactDOM.render(
       <IndexRoute component={Homepage}></IndexRoute>
       <Route path="/settings" name="settings" component={Settings}></Route>
       <Route path="/prebuiltQuiz" name="prebuiltQuiz" component={PrebuiltQuiz}></Route>
+      <Route path="/publicQuizzes" name="publicQuizzes" component={PublicQuizList}></Route>
       <Route path="/customQuiz" name="customQuiz" component={CustomQuiz}></Route>
       <Route path="/signup" name="signup" component={SignUp}></Route>
       <Route path="/login" name="login" component={Login}></Route>
