@@ -20,7 +20,6 @@ module.exports = {
           res.json(questions);
         });
       } else {
-<<<<<<< HEAD
         db.UsersTests.findAll({
           where: {userId: 1/* req.session.user */}
         }).then( (testIds) => {
@@ -37,11 +36,6 @@ module.exports = {
             }).then(function(testsArray) {
               res.json(testsArray);
             });
-=======
-        db.Test.findAll()
-        .then(function(questions) {
-          res.json(questions);
->>>>>>> 02844046df0f8177843541ecaf4328ddf8441fcf
         });
       }
     },
