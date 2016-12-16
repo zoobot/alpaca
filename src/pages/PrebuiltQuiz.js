@@ -25,7 +25,7 @@ export default class PrebuiltQuiz extends React.Component {
       quizName: '',
       quizNames: [],
       score: 0,
-      completedQuiz: true, // when true ternary in render shows the summary component
+      completedQuiz: false, // when true ternary in render shows the summary component
       selectedQuiz: null,
       takingQuiz: false
     };
