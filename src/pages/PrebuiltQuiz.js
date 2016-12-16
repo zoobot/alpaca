@@ -251,6 +251,14 @@ export default class PrebuiltQuiz extends React.Component {
     }
   }
 
+  takeAnotherQuiz() {
+    this.setState({
+      takingQuiz: false,
+      startTimer: false,
+      selectedQuiz: null
+    })
+  }
+
           // ternary is used in render to render the completed page if this.state.CompletedQuiz is true :)
           // ternary is also used to display the Timer only after a test has been selected
   render() {
@@ -261,7 +269,11 @@ export default class PrebuiltQuiz extends React.Component {
           ?
           <div>
             <h1>quiz complete, your score is: {this.state.score}%!</h1>
-            <button onClick={this.resetPage.bind(this)} className="btn btn-lg">Take Another Quiz</button>
+            <button
+              type="button"
+              className="btn btn-success"
+              onClick={this.takeAnotherQuiz.bind(this)}>Take Another Quiz
+            </button>
           </div>
           :
           !this.state.takingQuiz
@@ -284,7 +296,7 @@ export default class PrebuiltQuiz extends React.Component {
             </div>
             <button
               type="button"
-              className="btn btn-danger"
+              className="btn btn-success"
               onClick={this.startQuiz.bind(this)}>Take Quiz
             </button>
           </div>
