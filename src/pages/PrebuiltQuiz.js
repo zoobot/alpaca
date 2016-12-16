@@ -45,17 +45,11 @@ export default class PrebuiltQuiz extends React.Component {
         console.log(entries);
         var temp = [];
         entries.forEach(entry => {
-<<<<<<< HEAD
-          if (temp.indexOf(entry.test) === -1) {
-            temp.push(entry.test);
-          }
-=======
           // Makes sure there is no duplicates.
           // if (temp.indexOf(entry.test) === -1) {
           //   temp.push(entry.test);
           // }
           temp.push([entry.test, entry.id]);
->>>>>>> 02844046df0f8177843541ecaf4328ddf8441fcf
         });
         this.setState({
           quizNames: temp,
