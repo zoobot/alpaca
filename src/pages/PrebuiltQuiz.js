@@ -31,7 +31,7 @@ export default class PrebuiltQuiz extends React.Component {
 
   componentDidMount() {
     this.getQuizes(); // generate drop down list to select test
-    this.GetQuestions();
+    // this.GetQuestions();
   }
 
   // get all quizzes from server
@@ -39,10 +39,11 @@ export default class PrebuiltQuiz extends React.Component {
     axios.get('/questions')
       .then(response => {
         var entries = response.data;
+        console.log(entries);
         var temp = [];
         entries.forEach(entry => {
-          if (temp.indexOf(entry.testName) === -1) {
-            temp.push(entry.testName);
+          if (temp.indexOf(entry.test) === -1) {
+            temp.push(entry.test);
           }
         });
         this.setState({

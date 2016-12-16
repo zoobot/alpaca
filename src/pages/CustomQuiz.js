@@ -30,13 +30,10 @@ export default class CustomQuiz extends React.Component {
       wrong3: this.state.option3,
       testName: this.state.testName
     })
-    .then(() => {
-      console.log("this is happening");
-      this.clearForm();
-    })
-    .catch((err) => {
-      console.log("this is not happening", err);
-    });
+    // .then((response) => {
+    //   console.log("this is happening", response);
+    //   this.clearForm();
+    // })
     //this.getTestNameCurrentQuestions();
   }
 

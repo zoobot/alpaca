@@ -2,6 +2,7 @@ var db = require('../db');
 var bcrypt = require('bcrypt');
 var saltRounds = 10;
 
+
 module.exports = {
   // in quiz page, GET request will return object of all quiz Q's and A's
   questions: {
@@ -19,9 +20,22 @@ module.exports = {
           res.json(questions);
         });
       } else {
-        db.Question.findAll()
-        .then(function(questions) {
-          res.json(questions);
+        db.UsersTests.findAll({
+          where: {userId: 1/* req.session.user */}
+        }).then( (testIds) => {
+            var tests = [];
+            testIds.forEach( (entry) => {
+              tests.push(entry.dataValues.testId);
+            });
+            db.Test.findAll({
+              where: {
+                id: {
+                  in: tests
+                }
+              }
+            }).then(function(testsArray) {
+              res.json(testsArray);
+            });
         });
       }
     },
@@ -32,17 +46,18 @@ module.exports = {
         where: {test: req.body.testName}
       })
         .spread( (test, created) => {
-          console.log("this is test data", test);
+          // console.log("this is test data", test);
+          // console.log("this is req", req.session);
           //retrieve testId
           //create userId and testId (grab userId from session)
           db.UsersTests.findOrCreate({
             where: {
               testId: test.get('id'),
-              userId: req.session.user.id
+              userId: 2
             }
           })
             .spread( (usertest, created) => {
-              console.log("this is usertest data ==========", usertest);
+              // console.log("this is usertest data ==========", usertest);
             });
 
           //create a question using the remaining info and testId
@@ -52,7 +67,8 @@ module.exports = {
             wrong1: req.body.wrong1,
             wrong2: req.body.wrong2,
             wrong3: req.body.wrong3,
-            testId: test.get('id')
+            testId: test.get('id'),
+            userId: 1
           })
             .spread( (question, created) => {
               console.log("this is what question is", question);
