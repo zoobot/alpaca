@@ -26,7 +26,8 @@ export default class PrebuiltQuiz extends React.Component {
       quizNames: [],
       score: 0,
       completedQuiz: false, // when true ternary in render shows the summary component
-      selectedQuiz: null
+      selectedQuiz: null,
+      takingQuiz: false
     };
   }
 
@@ -239,6 +240,17 @@ export default class PrebuiltQuiz extends React.Component {
     // id is the testId to be deleted.
   }
 
+  startQuiz() {
+    if (this.state.selectedQuiz !== null) {
+      // Send out API call to get Quiz questions.
+      // Once we have the question change the state.
+      this.setState({
+        takingQuiz: true,
+        startTimer: true
+      });
+    }
+  }
+
           // ternary is used in render to render the completed page if this.state.CompletedQuiz is true :)
           // ternary is also used to display the Timer only after a test has been selected
   render() {
@@ -252,12 +264,32 @@ export default class PrebuiltQuiz extends React.Component {
             <button onClick={this.resetPage.bind(this)} className="btn btn-lg">Take Another Quiz</button>
           </div>
           :
+          !this.state.takingQuiz
+          ?
           <div>
             <h1>Select a quiz!</h1>
             <div className="row list-group">
-              {this.state.quizNames.map((test, i) => <button onClick={() => this.handleSelect(test[1])} type="button" key={i} className={`list-group-item ${this.state.selectedQuiz === test[1] ? "list-group-item-success" : ""}`}>{test[0]}<span onClick={() => this.handleDelete(test[1])} className="glyphicon glyphicon-trash pull-right"></span></button>)}
+              {this.state.quizNames.map((test, i) =>
+                <button
+                  onClick={() => this.handleSelect(test[1])}
+                  type="button"
+                  key={i}
+                  className={`list-group-item ${this.state.selectedQuiz === test[1] ? "list-group-item-success" : ""}`}>
+                  {test[0]}
+                  <span
+                    onClick={() => this.handleDelete(test[1])}
+                    className="glyphicon glyphicon-trash pull-right">
+                  </span>
+                </button>)}
             </div>
-
+            <button
+              type="button"
+              className="btn btn-danger"
+              onClick={this.startQuiz.bind(this)}>Take Quiz
+            </button>
+          </div>
+          :
+          <div>
             <h1>{this.state.name}</h1>
             {/* animations for buttons */}
             <VelocityTransitionGroup
