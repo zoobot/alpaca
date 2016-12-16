@@ -25,7 +25,7 @@ export default class PrebuiltQuiz extends React.Component {
       quizName: '',
       quizNames: [],
       score: 0,
-      completedQuiz: false, // when true ternary in render shows the summary component
+      completedQuiz: true, // when true ternary in render shows the summary component
       selectedQuiz: null,
       takingQuiz: false
     };
@@ -204,31 +204,6 @@ export default class PrebuiltQuiz extends React.Component {
     return array;
   }
 
-  resetPage() {
-    this.setState({
-      userID: '', // opportunity to get ID for currently logged-in user to track results
-      category: '', // opportunity to get category of current test to track results
-      name: '',  // this is actually the question being asked (please change the name)
-      correct: '',
-      wrong1: '',
-      wrong2: '',
-      wrong3: '',
-      questions: [],
-      answers: [],
-      randomAnswers: [],
-      index: null,
-      timeCount: 15, // used for countdown
-      correctAns: 0, // number of correct and wrong answer submissions for percent
-      wrongAns: 0,
-      startTimer: true, // begins timer
-      showTimer: false, // used to show timer after selecting a quiz
-      quizName: '',
-      quizNames: [],
-      score: 0,
-      completedQuiz: false
-    });
-  }
-
   handleSelect(target) {
     this.setState({
       selectedQuiz: target
@@ -253,10 +228,11 @@ export default class PrebuiltQuiz extends React.Component {
 
   takeAnotherQuiz() {
     this.setState({
+      completedQuiz: false,
       takingQuiz: false,
       startTimer: false,
       selectedQuiz: null
-    })
+    });
   }
 
           // ternary is used in render to render the completed page if this.state.CompletedQuiz is true :)
@@ -266,7 +242,9 @@ export default class PrebuiltQuiz extends React.Component {
       <div className="App">
       {
           this.state.completedQuiz
+
           ?
+
           <div>
             <h1>quiz complete, your score is: {this.state.score}%!</h1>
             <button
@@ -275,9 +253,13 @@ export default class PrebuiltQuiz extends React.Component {
               onClick={this.takeAnotherQuiz.bind(this)}>Take Another Quiz
             </button>
           </div>
+
           :
+
           !this.state.takingQuiz
+
           ?
+
           <div>
             <h1>Select a quiz!</h1>
             <div className="row list-group">
@@ -300,12 +282,19 @@ export default class PrebuiltQuiz extends React.Component {
               onClick={this.startQuiz.bind(this)}>Take Quiz
             </button>
           </div>
+
           :
+
           <div>
             <h1>{this.state.name}</h1>
             {/* animations for buttons */}
             <VelocityTransitionGroup
-              enter={{animation: 'transition.slideDownBigOut', duration: 20000, opacity: [1, 1], translateY: 200}}
+              enter={{
+                animation: 'transition.slideDownBigOut',
+                duration: 20000,
+                opacity: [1, 1],
+                translateY: 200
+              }}
               leave={{opacity: [1, 1]}}
             >
               {this.state.randomAnswers.map(option => <button onClick={this.handleClick.bind(this)} className={`answer btn btn-lg ${option}`}>{option}</button> )}
