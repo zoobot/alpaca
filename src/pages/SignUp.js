@@ -48,7 +48,6 @@ export default class SignUp extends React.Component {
   }
 
   render() {
-    console.log('SignUp');
     return (
       <div className="container main-signup-container">
         <div className="col-md-6 col-md-offset-3">

@@ -51,15 +51,10 @@ module.exports = {
     }
   },
   user: {
-    get: function (username, callback) {
-      db.User
-        .find({ where: { username: username} })
-        .then(function(result) {
-          callback(result);
-        });
+    authenticate: function (attempted, password) {
+      return bcrypt.compareSync(attempted, password);
     },
     post: function (req, res) {
-      console.log('req.body', req.body);
       db.User
         .find({where: {username: req.body.username}})
         .then(function(result) {
@@ -74,12 +69,19 @@ module.exports = {
                 firstname: req.body.firstname,
                 lastname: req.body.lastname,
               }).then(function(user) {
-                console.log('login user', user);
+                console.log('POSTED USER', user);
                 res.sendStatus(201);
               });
             });
           }
         });
+    },
+    login: function(req, res) {
+      res.send(req.body).status(201);
+    },
+    logout: function (req, res) {
+      req.logout();
+      res.redirect('/#/login');
     }
   },
   results: {

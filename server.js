@@ -12,28 +12,62 @@ const controller = require('./controllers');
 // config - middleware
 app.use(morgan('dev'));
 app.use(parser.json());
-app.use('/', router);
 app.use(express.static('public'));
 app.use(require('express-session')({
   secret: 'penguins_in_the_mist',
   resave: false,
   saveUninitialized: false,
   cookie: {
+    httpOnly: true,
     maxAge: 6.048e8
   }
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use('/', router);
 
-passport.use('local-login', new LocalStrategy(function(username, password, done) {
+passport.serializeUser(function(user, done) {
+  console.log('SERIALIZE', user);
+  done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+  console.log('DESERIALIZE', id);
+  db.User
+    .find({ where: {id: id} })
+    .then( function(result) {
+      done(null, result.dataValues);
+    })
+    .catch(function(err) {
+      done(err, null);
+    });
+});
+
+passport.use('local-login', new LocalStrategy({
+  passReqToCallback: true
+}, function(req, username, password, done) {
+  db.User
+    .find({ where: {username: username} })
+    .then(function(result) {
+      req.body = {
+        firstname: result.dataValues.firstname,
+        lastname: result.dataValues.lastname
+      };
+      if (!result) { return done(null, false); }
+      if (!(controller.user.authenticate(password, result.dataValues.password))) {
+        return done(null, false);
+      }
+      return done(null, result.dataValues);
+    });
 }));
 
 // routes
 // Connect controller methods to their corresponding routes
 router.get('/questions', controller.questions.get);
 router.post('/questions', controller.questions.post);
-router.post('/auth/login', passport.authenticate('local-login'));
+router.post('/auth/login', passport.authenticate('local-login'), controller.user.login);
 router.post('/auth/signup', controller.user.post);
+router.get('/auth/signout', controller.user.logout);
 
 // port
 app.set('port', 1337);
