@@ -38,7 +38,7 @@ export default class Nav extends React.Component {
               <li><Link to="/prebuiltQuiz">PreBuilt Quiz</Link></li>
               <li><Link to="/customQuiz">Custom Quiz</Link></li>
               <li><Link to="/login">Log In</Link></li>
-              <li><Link to="/signup">Sign Up</Link></li>
+              <li><Link to="/auth/signout">Log Out</Link></li>
             </ul>
           </div>
         </div>

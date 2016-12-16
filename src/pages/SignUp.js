@@ -15,7 +15,6 @@ export default class SignUp extends React.Component {
   }
 
   sendCredentials() {
-    console.log('SEND', this.state);
     axios.post('/auth/signup', {
       firstname: this.state.firstname,
       lastname: this.state.lastname,
@@ -49,7 +48,6 @@ export default class SignUp extends React.Component {
   }
 
   render() {
-    console.log('SignUp');
     return (
       <div className="container main-signup-container">
         <div className="col-md-6 col-md-offset-3">

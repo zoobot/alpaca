@@ -1,16 +1,11 @@
 import React from 'react';
 import axios from 'axios';
-import { Link } from 'react-router';
-
-
-//instead of writing <a href="">, you can substitute it with Link
-// import { Link } from "react-router";
+import { Link, hashHistory } from 'react-router';
 
 export default class Login extends React.Component {
   constructor(props) {
     super(props);
 
-    //keep state
     this.state = {
       username: '',
       password: ''
@@ -21,6 +16,13 @@ export default class Login extends React.Component {
     axios.post('/auth/login', {
       username: this.state.username,
       password: this.state.password,
+    })
+    .then(function(result) {
+      console.log('RESULT', result.data);
+      hashHistory.push('/settings');
+    })
+    .catch(function(err) {
+      console.error('ERROR', err);
     });
   }
 
@@ -54,7 +56,7 @@ export default class Login extends React.Component {
                 <input type="text" className="form-control" id="password" placeholder="Password" onChange={this.checkPassword.bind(this)}></input>
               </div>
             </div>
-            <button className="btn btn-sm btn-primary" type="submit" onClick={this.sendCredentials.bind(this)}>Log In</button>
+            <button className="btn btn-sm btn-primary" type="button" onClick={this.sendCredentials.bind(this)}>Log In</button>
           </form>
           <div className="row text-center">
             <small >Don't have an account?<Link to="/signup"> Sign Up</Link></small>
