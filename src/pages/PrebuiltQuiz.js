@@ -20,12 +20,14 @@ export default class PrebuiltQuiz extends React.Component {
       timeCount: 15, // used for countdown
       correctAns: 0, // number of correct and wrong answer submissions for percent
       wrongAns: 0,
-      startTimer: true, // begins timer
+      startTimer: false, // no timer while choosing quiz.
       showTimer: false, // used to show timer after selecting a quiz
       quizName: '',
       quizNames: [],
       score: 0,
       completedQuiz: false, // when true ternary in render shows the summary component
+      selectedQuiz: null,
+      takingQuiz: false
     };
   }
 
@@ -38,12 +40,15 @@ export default class PrebuiltQuiz extends React.Component {
   getQuizes() {
     axios.get('/questions')
       .then(response => {
+        console.log(response);
         var entries = response.data;
         var temp = [];
         entries.forEach(entry => {
-          if (temp.indexOf(entry.testName) === -1) {
-            temp.push(entry.testName);
-          }
+          // Makes sure there is no duplicates.
+          // if (temp.indexOf(entry.test) === -1) {
+          //   temp.push(entry.test);
+          // }
+          temp.push([entry.test, entry.id]);
         });
         this.setState({
           quizNames: temp,
@@ -66,12 +71,12 @@ export default class PrebuiltQuiz extends React.Component {
   }
 
   playCorrectSound() {
-    var audio = new Audio('./assets/correct.mp3');
-    audio.play();
+    // var audio = new Audio('./assets/correct.mp3');
+    // audio.play();
   }
   playWrongSound() {
-    var audio = new Audio('./assets/wrongCrash.wav');
-    audio.play();
+    // var audio = new Audio('./assets/wrongCrash.wav');
+    // audio.play();
   }
 
   // grabs all the questions based on the selected quiz from the drop down list
@@ -104,6 +109,7 @@ export default class PrebuiltQuiz extends React.Component {
       this.handleWrong();
     }
   }
+
   handleCorrect() {
     this.playCorrectSound();
     this.setState({
@@ -113,6 +119,7 @@ export default class PrebuiltQuiz extends React.Component {
       correctAns: this.state.correctAns + 1,
     }, this.handleQuestionChange);
   }
+
   handleWrong() {
     this.playWrongSound();
     this.setState({
@@ -122,6 +129,7 @@ export default class PrebuiltQuiz extends React.Component {
       wrongAns: this.state.wrongAns + 1,
     }, this.handleQuestionChange);
   }
+
   handleTime() {
     this.setState({
       timeCount: this.state.timeCount - 1,
@@ -159,6 +167,7 @@ export default class PrebuiltQuiz extends React.Component {
       });
     }
   }
+
   handleEndQuiz() {
     var percent = (this.state.correctAns / (this.state.questions.length)).toFixed(2) * 100;
     clearInterval(this.timer);
@@ -195,22 +204,79 @@ export default class PrebuiltQuiz extends React.Component {
     return array;
   }
 
+  handleSelect(target) {
+    this.setState({
+      selectedQuiz: target
+    });
+  }
+
+  handleDelete(id) {
+    // This is where the request to delete and quiz will be sent from.
+    // id is the testId to be deleted.
+  }
+
+  startQuiz() {
+    if (this.state.selectedQuiz !== null) {
+      // Send out API call to get Quiz questions.
+      // Once we have the question change the state.
+      this.setState({
+        takingQuiz: true,
+        startTimer: true
+      });
+    }
+  }
+
+  takeAnotherQuiz() {
+    this.setState({
+      takingQuiz: false,
+      startTimer: false,
+      selectedQuiz: null
+    })
+  }
+
           // ternary is used in render to render the completed page if this.state.CompletedQuiz is true :)
           // ternary is also used to display the Timer only after a test has been selected
   render() {
     return (
       <div className="App">
       {
-          this.state.completedQuiz ? <h1>quiz complete, your score is: {this.state.score}%!</h1> :
+          this.state.completedQuiz
+          ?
+          <div>
+            <h1>quiz complete, your score is: {this.state.score}%!</h1>
+            <button
+              type="button"
+              className="btn btn-success"
+              onClick={this.takeAnotherQuiz.bind(this)}>Take Another Quiz
+            </button>
+          </div>
+          :
+          !this.state.takingQuiz
+          ?
           <div>
             <h1>Select a quiz!</h1>
-            <select className="buttonStyle" onChange={this.handleQuizSelect.bind(this)} value={this.state.value} >
-              <option selected></option>
-              {this.state.quizNames.map(name =>
-                <option value={name}>{name}</option>
-              )}
-            </select>
-
+            <div className="row list-group">
+              {this.state.quizNames.map((test, i) =>
+                <button
+                  onClick={() => this.handleSelect(test[1])}
+                  type="button"
+                  key={i}
+                  className={`list-group-item ${this.state.selectedQuiz === test[1] ? "list-group-item-success" : ""}`}>
+                  {test[0]}
+                  <span
+                    onClick={() => this.handleDelete(test[1])}
+                    className="glyphicon glyphicon-trash pull-right">
+                  </span>
+                </button>)}
+            </div>
+            <button
+              type="button"
+              className="btn btn-success"
+              onClick={this.startQuiz.bind(this)}>Take Quiz
+            </button>
+          </div>
+          :
+          <div>
             <h1>{this.state.name}</h1>
             {/* animations for buttons */}
             <VelocityTransitionGroup

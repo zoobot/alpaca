@@ -10,7 +10,7 @@ module.exports = {
       // console.log('===> MAKING GET REQUEST FOR QUESTIONS, REQ.PARAMS = ', req.query.ID)
       if (req.query.ID !== undefined) {
         console.log('INSIDE IF STATEMENT');
-        db.Question.findAll({
+        db.Test.findAll({
           where: {
             testName: req.query.ID
           }
@@ -19,7 +19,7 @@ module.exports = {
           res.json(questions);
         });
       } else {
-        db.Question.findAll()
+        db.Test.findAll()
         .then(function(questions) {
           res.json(questions);
         });

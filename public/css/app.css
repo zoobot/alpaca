@@ -85,3 +85,7 @@ li a:hover {
   margin: 0;
   width: 25%
 }
+
+button {
+  outline: none;
+}
