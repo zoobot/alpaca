@@ -228,10 +228,11 @@ export default class PrebuiltQuiz extends React.Component {
 
   takeAnotherQuiz() {
     this.setState({
+      completedQuiz: false,
       takingQuiz: false,
       startTimer: false,
       selectedQuiz: null
-    })
+    });
   }
 
           // ternary is used in render to render the completed page if this.state.CompletedQuiz is true :)
@@ -241,7 +242,9 @@ export default class PrebuiltQuiz extends React.Component {
       <div className="App">
       {
           this.state.completedQuiz
+
           ?
+
           <div>
             <h1>quiz complete, your score is: {this.state.score}%!</h1>
             <button
@@ -250,9 +253,13 @@ export default class PrebuiltQuiz extends React.Component {
               onClick={this.takeAnotherQuiz.bind(this)}>Take Another Quiz
             </button>
           </div>
+
           :
+
           !this.state.takingQuiz
+
           ?
+
           <div>
             <h1>Select a quiz!</h1>
             <div className="row list-group">
@@ -275,12 +282,19 @@ export default class PrebuiltQuiz extends React.Component {
               onClick={this.startQuiz.bind(this)}>Take Quiz
             </button>
           </div>
+
           :
+
           <div>
             <h1>{this.state.name}</h1>
             {/* animations for buttons */}
             <VelocityTransitionGroup
-              enter={{animation: 'transition.slideDownBigOut', duration: 20000, opacity: [1, 1], translateY: 200}}
+              enter={{
+                animation: 'transition.slideDownBigOut',
+                duration: 20000,
+                opacity: [1, 1],
+                translateY: 200
+              }}
               leave={{opacity: [1, 1]}}
             >
               {this.state.randomAnswers.map(option => <button onClick={this.handleClick.bind(this)} className={`answer btn btn-lg ${option}`}>{option}</button> )}
