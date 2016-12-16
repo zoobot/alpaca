@@ -21,27 +21,28 @@ module.exports = {
         });
       } else {
         db.UsersTests.findAll({
-          where: {userId: 1/* req.session.user */}
+          where: {userId: req.session.user}
         }).then( (testIds) => {
-            var tests = [];
-            testIds.forEach( (entry) => {
-              tests.push(entry.dataValues.testId);
-            });
-            db.Test.findAll({
-              where: {
-                id: {
-                  in: tests
-                }
+          var tests = [];
+          testIds.forEach( (entry) => {
+            tests.push(entry.dataValues.testId);
+          });
+          db.Test.findAll({
+            where: {
+              id: {
+                in: tests //[testId1, testId2]
               }
-            }).then(function(testsArray) {
-              res.json(testsArray);
-            });
+            }
+          }).then(function(testsArray) {
+            res.json(testsArray);
+          });
         });
       }
     },
     // in quiz Creation page, POST request will add an entry into database
     post: function (req, res) {
       //query findOrCreate Test table
+      var user = req.session.passport.user;
       db.Test.findOrCreate({
         where: {test: req.body.testName}
       })
@@ -53,12 +54,12 @@ module.exports = {
           db.UsersTests.findOrCreate({
             where: {
               testId: test.get('id'),
-              userId: 2
+              userId: user
             }
-          })
-            .spread( (usertest, created) => {
-              // console.log("this is usertest data ==========", usertest);
-            });
+          });
+            // .spread( (usertest, created) => {
+            //   // console.log("this is usertest data ==========", usertest);
+            // });
 
           //create a question using the remaining info and testId
           db.Question.create({
@@ -68,11 +69,11 @@ module.exports = {
             wrong2: req.body.wrong2,
             wrong3: req.body.wrong3,
             testId: test.get('id'),
-            userId: 1
-          })
-            .spread( (question, created) => {
-              console.log("this is what question is", question);
-            });
+            userId: user
+          });
+            // .spread( (question, created) => {
+            //   console.log('this is what question is', question);
+            // });
 
         })
         .then( () => {

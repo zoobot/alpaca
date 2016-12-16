@@ -269,7 +269,7 @@ export default class PrebuiltQuiz extends React.Component {
                   onClick={() => this.handleSelect(test[1])}
                   type="button"
                   key={i}
-                  className={`list-group-item ${this.state.selectedQuiz === test[1] ? "list-group-item-success" : ""}`}>
+                  className={`list-group-item ${this.state.selectedQuiz === test[1] ? 'list-group-item-success' : ''}`}>
                   {test[0]}
                   <span
                     onClick={() => this.handleDelete(test[1])}
