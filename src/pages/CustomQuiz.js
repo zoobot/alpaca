@@ -29,7 +29,7 @@ export default class CustomQuiz extends React.Component {
       wrong2: this.state.option2,
       wrong3: this.state.option3,
       testName: this.state.testName
-    })
+    });
     // .then((response) => {
     //   console.log("this is happening", response);
     //   this.clearForm();

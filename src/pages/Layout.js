@@ -15,7 +15,7 @@ export default class Layout extends React.Component {
         <Nav location={location} />
         <div className="container" style={containerStyle}>
           <div className="row">
-            {this.props.children}
+            {this.props.children }
           </div>
         </div>
          <Footer/>
