@@ -27,28 +27,66 @@ module.exports = {
     },
     // in quiz Creation page, POST request will add an entry into database
     post: function (req, res) {
-      console.log('POST REQUEST TO QUESTIONS');
-      console.log(JSON.stringify(req.body));
-      if (req.body.delete === true) {
-        console.log('POST delete request for name = ' + req.body.name);
-        db.Question.destroy({
-          where: {
-            name: req.body.name
-          }
-        });
-      } else {
-        db.Question.create({
-          name: req.body.name,
-          correct: req.body.correct,
-          wrong1: req.body.wrong1,
-          wrong2: req.body.wrong2,
-          wrong3: req.body.wrong3,
-          testName: req.body.testName,
-        }).then(function(question) {
+      //query findOrCreate Test table
+      db.Test.findOrCreate({
+        where: {test: req.body.testName}
+      })
+        .spread( (test, created) => {
+          console.log("this is test data", test);
+          //retrieve testId
+          //create userId and testId (grab userId from session)
+          db.UsersTests.findOrCreate({
+            where: {
+              testId: test.get('id'),
+              userId: req.session.user.id
+            }
+          })
+            .spread( (usertest, created) => {
+              console.log("this is usertest data ==========", usertest);
+            });
+
+          //create a question using the remaining info and testId
+          db.Question.create({
+            name: req.body.name,
+            correct: req.body.correct,
+            wrong1: req.body.wrong1,
+            wrong2: req.body.wrong2,
+            wrong3: req.body.wrong3,
+            testId: test.get('id')
+          })
+            .spread( (question, created) => {
+              console.log("this is what question is", question);
+            });
+
+        })
+        .then( () => {
           res.sendStatus(201);
         });
-      }
+
+
+    //   console.log('POST REQUEST TO QUESTIONS');
+    //   console.log(JSON.stringify(req.body));
+    //   if (req.body.delete === true) {
+    //     console.log('POST delete request for name = ' + req.body.name);
+    //     db.Question.destroy({
+    //       where: {
+    //         name: req.body.name
+    //       }
+    //     });
+    //   } else {
+    //     db.Question.create({
+    //       name: req.body.name,
+    //       correct: req.body.correct,
+    //       wrong1: req.body.wrong1,
+    //       wrong2: req.body.wrong2,
+    //       wrong3: req.body.wrong3,
+    //       testName: req.body.testName,
+    //     }).then(function(question) {
+    //       res.sendStatus(201);
+    //     });
+    //   }
     }
+
   },
   user: {
     get: function (username, callback) {
