@@ -25,7 +25,8 @@ export default class PrebuiltQuiz extends React.Component {
       quizName: '',
       quizNames: [],
       score: 0,
-      completedQuiz: false // when true ternary in render shows the summary component
+      completedQuiz: false, // when true ternary in render shows the summary component
+      selectedQuiz: null
     };
   }
 
@@ -42,9 +43,11 @@ export default class PrebuiltQuiz extends React.Component {
         var entries = response.data;
         var temp = [];
         entries.forEach(entry => {
-          if (temp.indexOf(entry.test) === -1) {
-            temp.push(entry.test);
-          }
+          // Makes sure there is no duplicates.
+          // if (temp.indexOf(entry.test) === -1) {
+          //   temp.push(entry.test);
+          // }
+          temp.push([entry.test, entry.id]);
         });
         this.setState({
           quizNames: temp,
@@ -225,6 +228,17 @@ export default class PrebuiltQuiz extends React.Component {
     });
   }
 
+  handleSelect(target) {
+    this.setState({
+      selectedQuiz: target
+    });
+  }
+
+  handleDelete(id) {
+    // This is where the request to delete and quiz will be sent from.
+    // id is the testId to be deleted.
+  }
+
           // ternary is used in render to render the completed page if this.state.CompletedQuiz is true :)
           // ternary is also used to display the Timer only after a test has been selected
   render() {
@@ -240,15 +254,9 @@ export default class PrebuiltQuiz extends React.Component {
           :
           <div>
             <h1>Select a quiz!</h1>
-            {/*<select className="buttonStyle" onChange={this.handleQuizSelect.bind(this)} value={this.state.value} >
-                          <option selected></option>
-                          {this.state.quizNames.map(name =>
-                            <option value={name}>{name}</option>
-                          )}
-                        </select>*/}
-            <ul className="list-group">
-              {this.state.quizNames.map((name, i) => <li key={i} className="list-group-item" value={name}>{name}</li>)}
-            </ul>
+            <div className="row list-group">
+              {this.state.quizNames.map((test, i) => <button onClick={() => this.handleSelect(test[1])} type="button" key={i} className={`list-group-item ${this.state.selectedQuiz === test[1] ? "list-group-item-success" : ""}`}>{test[0]}<span onClick={() => this.handleDelete(test[1])} className="glyphicon glyphicon-trash pull-right"></span></button>)}
+            </div>
 
             <h1>{this.state.name}</h1>
             {/* animations for buttons */}
