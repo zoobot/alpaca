@@ -204,31 +204,6 @@ export default class PrebuiltQuiz extends React.Component {
     return array;
   }
 
-  resetPage() {
-    this.setState({
-      userID: '', // opportunity to get ID for currently logged-in user to track results
-      category: '', // opportunity to get category of current test to track results
-      name: '',  // this is actually the question being asked (please change the name)
-      correct: '',
-      wrong1: '',
-      wrong2: '',
-      wrong3: '',
-      questions: [],
-      answers: [],
-      randomAnswers: [],
-      index: null,
-      timeCount: 15, // used for countdown
-      correctAns: 0, // number of correct and wrong answer submissions for percent
-      wrongAns: 0,
-      startTimer: true, // begins timer
-      showTimer: false, // used to show timer after selecting a quiz
-      quizName: '',
-      quizNames: [],
-      score: 0,
-      completedQuiz: false
-    });
-  }
-
   handleSelect(target) {
     this.setState({
       selectedQuiz: target
