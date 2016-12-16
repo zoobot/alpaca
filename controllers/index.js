@@ -2,6 +2,7 @@ var db = require('../db');
 var bcrypt = require('bcrypt');
 var saltRounds = 10;
 
+
 module.exports = {
   // in quiz page, GET request will return object of all quiz Q's and A's
   questions: {
@@ -19,36 +20,95 @@ module.exports = {
           res.json(questions);
         });
       } else {
+<<<<<<< HEAD
+        db.UsersTests.findAll({
+          where: {userId: 1/* req.session.user */}
+        }).then( (testIds) => {
+            var tests = [];
+            testIds.forEach( (entry) => {
+              tests.push(entry.dataValues.testId);
+            });
+            db.Test.findAll({
+              where: {
+                id: {
+                  in: tests
+                }
+              }
+            }).then(function(testsArray) {
+              res.json(testsArray);
+            });
+=======
         db.Test.findAll()
         .then(function(questions) {
           res.json(questions);
+>>>>>>> 02844046df0f8177843541ecaf4328ddf8441fcf
         });
       }
     },
     // in quiz Creation page, POST request will add an entry into database
     post: function (req, res) {
-      console.log('POST REQUEST TO QUESTIONS');
-      console.log(JSON.stringify(req.body));
-      if (req.body.delete === true) {
-        console.log('POST delete request for name = ' + req.body.name);
-        db.Question.destroy({
-          where: {
-            name: req.body.name
-          }
-        });
-      } else {
-        db.Question.create({
-          name: req.body.name,
-          correct: req.body.correct,
-          wrong1: req.body.wrong1,
-          wrong2: req.body.wrong2,
-          wrong3: req.body.wrong3,
-          testName: req.body.testName,
-        }).then(function(question) {
+      //query findOrCreate Test table
+      db.Test.findOrCreate({
+        where: {test: req.body.testName}
+      })
+        .spread( (test, created) => {
+          // console.log("this is test data", test);
+          // console.log("this is req", req.session);
+          //retrieve testId
+          //create userId and testId (grab userId from session)
+          db.UsersTests.findOrCreate({
+            where: {
+              testId: test.get('id'),
+              userId: 2
+            }
+          })
+            .spread( (usertest, created) => {
+              // console.log("this is usertest data ==========", usertest);
+            });
+
+          //create a question using the remaining info and testId
+          db.Question.create({
+            name: req.body.name,
+            correct: req.body.correct,
+            wrong1: req.body.wrong1,
+            wrong2: req.body.wrong2,
+            wrong3: req.body.wrong3,
+            testId: test.get('id'),
+            userId: 1
+          })
+            .spread( (question, created) => {
+              console.log("this is what question is", question);
+            });
+
+        })
+        .then( () => {
           res.sendStatus(201);
         });
-      }
+
+
+    //   console.log('POST REQUEST TO QUESTIONS');
+    //   console.log(JSON.stringify(req.body));
+    //   if (req.body.delete === true) {
+    //     console.log('POST delete request for name = ' + req.body.name);
+    //     db.Question.destroy({
+    //       where: {
+    //         name: req.body.name
+    //       }
+    //     });
+    //   } else {
+    //     db.Question.create({
+    //       name: req.body.name,
+    //       correct: req.body.correct,
+    //       wrong1: req.body.wrong1,
+    //       wrong2: req.body.wrong2,
+    //       wrong3: req.body.wrong3,
+    //       testName: req.body.testName,
+    //     }).then(function(question) {
+    //       res.sendStatus(201);
+    //     });
+    //   }
     }
+
   },
   user: {
     authenticate: function (attempted, password) {

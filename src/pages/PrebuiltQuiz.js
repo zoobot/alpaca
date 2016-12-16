@@ -33,7 +33,7 @@ export default class PrebuiltQuiz extends React.Component {
 
   componentDidMount() {
     this.getQuizes(); // generate drop down list to select test
-    this.GetQuestions();
+    // this.GetQuestions();
   }
 
   // get all quizzes from server
@@ -42,13 +42,20 @@ export default class PrebuiltQuiz extends React.Component {
       .then(response => {
         console.log(response);
         var entries = response.data;
+        console.log(entries);
         var temp = [];
         entries.forEach(entry => {
+<<<<<<< HEAD
+          if (temp.indexOf(entry.test) === -1) {
+            temp.push(entry.test);
+          }
+=======
           // Makes sure there is no duplicates.
           // if (temp.indexOf(entry.test) === -1) {
           //   temp.push(entry.test);
           // }
           temp.push([entry.test, entry.id]);
+>>>>>>> 02844046df0f8177843541ecaf4328ddf8441fcf
         });
         this.setState({
           quizNames: temp,
