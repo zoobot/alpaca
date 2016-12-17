@@ -130,6 +130,7 @@ export default class CustomQuiz extends React.Component {
   }
 
   render() {
+    console.log('QUIIIIIIIIZ', this.props.location.query.user.firstname);
     return (
       <div className="container customquiz">
         <div className="col-md-12">

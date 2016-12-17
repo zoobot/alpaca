@@ -5,7 +5,6 @@ import { Link, hashHistory } from 'react-router';
 export default class Login extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       username: '',
       password: ''
@@ -13,13 +12,14 @@ export default class Login extends React.Component {
   }
 
   sendCredentials() {
+    let userUpdate = this.props.updateUser;
     axios.post('/auth/login', {
       username: this.state.username,
       password: this.state.password,
     })
     .then(function(result) {
-      console.log('RESULT', result.data);
-      hashHistory.push('/settings');
+      userUpdate(result.data);
+      hashHistory.push('/prebuiltQuiz');
     })
     .catch(function(err) {
       console.error('ERROR', err);
@@ -53,7 +53,7 @@ export default class Login extends React.Component {
             <div className="form-group row">
               <label htmlFor="password" className="col-xs-4 col-form-label">Password</label>
               <div className="col-xs-8">
-                <input type="text" className="form-control" id="password" placeholder="Password" onChange={this.checkPassword.bind(this)}></input>
+                <input type="text" className="form-control" id="password" type="password" placeholder="Password" onChange={this.checkPassword.bind(this)}></input>
               </div>
             </div>
             <button className="btn btn-sm btn-primary" type="button" onClick={this.sendCredentials.bind(this)}>Log In</button>

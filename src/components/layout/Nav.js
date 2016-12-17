@@ -2,8 +2,8 @@ import React from 'react';
 import { Link } from 'react-router';
 
 export default class Nav extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       collapsed: true,
     };
@@ -15,12 +15,12 @@ export default class Nav extends React.Component {
   }
 
   render() {
+    console.log('NAV PROPS', this.props);
     const { location } = this.props;
     const { collapsed } = this.state;
     const navClass = collapsed ? 'collapse' : '';
 
     return (
-
       <nav className="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div className="container">
           <div className="navbar-header">
@@ -33,15 +33,19 @@ export default class Nav extends React.Component {
             <a className="navbar-brand" href="#">CrashCourse</a>
           </div>
           <div className={'navbar-collapse ' + navClass} id="bs-example-navbar-collapse-1">
-            <ul className="nav navbar-nav navbar-right">
-              <li><Link to="/settings" onClick={this.toggleCollapse.bind(this)}>Settings</Link></li>
-              <li><Link to="/publicQuizzes">Public Quizzes</Link></li>
-              <li><Link to="/prebuiltQuiz">My Quizzes</Link></li>
-              <li><Link to="/customQuiz">Build a New Quiz</Link></li>
-              <li><Link to="/groupQuiz">Group Quiz</Link></li>
-              <li><Link to="/login">Log In</Link></li>
-              <li><Link to="/auth/signout">Log Out</Link></li>
-            </ul>
+            { this.props.user ? (
+              <ul className="nav navbar-nav navbar-right">
+                <li><Link to="/prebuiltQuiz" onClick={this.toggleCollapse.bind(this)}>Quizzes</Link></li>
+                <li><Link to="/customQuiz">Build Quiz</Link></li>
+                <li><a href="/auth/signout">Log Out</a></li>
+                <li><Link to="/settings">Hi, {this.props.user.firstname}!</Link></li>
+              </ul>
+
+            ) : (
+              <ul className="nav navbar-nav navbar-right">
+                <li><Link to="/login" onClick={this.toggleCollapse.bind(this)}>Log In</Link></li>
+              </ul>
+            )}
           </div>
         </div>
       </nav>
