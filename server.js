@@ -1,4 +1,4 @@
-// setup - dependencies
+// Setup - dependencies
 const express = require('express');
 const app = express();
 const router = require('express').Router();
@@ -9,7 +9,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const db = require('./db');
 const controller = require('./controllers');
 
-// config - middleware
+// Config - middleware
 app.use(morgan('dev'));
 app.use(parser.json());
 app.use(express.static('public'));
@@ -61,7 +61,7 @@ passport.use('local-login', new LocalStrategy({
     });
 }));
 
-// routes
+// Routes
 // Connect controller methods to their corresponding routes
 router.get('/questions', controller.questions.get);
 router.post('/questions', controller.questions.post);
@@ -69,7 +69,7 @@ router.post('/auth/login', passport.authenticate('local-login'), controller.user
 router.post('/auth/signup', controller.user.post);
 router.get('/auth/signout', controller.user.logout);
 
-// port
+// Port
 app.set('port', 1337);
 // If we are being run directly, run the server.
 if (!module.parent) {
