@@ -33,15 +33,18 @@ export default class Nav extends React.Component {
             <a className="navbar-brand" href="#">CrashCourse</a>
           </div>
           <div className={'navbar-collapse ' + navClass} id="bs-example-navbar-collapse-1">
-            <ul className="nav navbar-nav navbar-right">
-              <li><Link to="/settings" onClick={this.toggleCollapse.bind(this)}>Settings</Link></li>
-              <li><Link to="/publicQuizzes">Public Quizzes</Link></li>
-              <li><Link to="/prebuiltQuiz">My Quizzes</Link></li>
-              <li><Link to="/customQuiz">Build a New Quiz</Link></li>
-              <li><Link to="/groupQuiz">Group Quiz</Link></li>
-              <li><Link to="/login">Log In</Link></li>
-              <li><a href="/auth/signout">Log Out</a></li>
-            </ul>
+            { this.props.user ? (
+              <ul className="nav navbar-nav navbar-right">
+                <li><Link to="/settings" onClick={this.toggleCollapse.bind(this)}>Settings</Link></li>
+                <li><Link to="/prebuiltQuiz">PreBuilt Quiz</Link></li>
+                <li><Link to="/customQuiz">Custom Quiz</Link></li>
+                <li><a href="/auth/signout">Log Out</a></li>
+              </ul>
+            ) : (
+              <ul className="nav navbar-nav navbar-right">
+                <li><Link to="/login" onClick={this.toggleCollapse.bind(this)}>Log In</Link></li>
+              </ul>
+            )}
           </div>
         </div>
       </nav>

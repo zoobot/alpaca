@@ -27,7 +27,7 @@ export default class Layout extends React.Component {
     };
     return (
       <div>
-        <Nav location={location} user={this.state.user} />
+        <Nav location={location} user={this.state.user} updateUser={this.updateUser} />
         <div className="container" style={containerStyle}>
           <div className="row">
             {childrenProps}
