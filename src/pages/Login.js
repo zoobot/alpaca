@@ -18,7 +18,6 @@ export default class Login extends React.Component {
       password: this.state.password,
     })
     .then(function(result) {
-      console.log('RESULT', result.data);
       hashHistory.push('/settings');
     })
     .catch(function(err) {

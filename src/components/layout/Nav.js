@@ -20,7 +20,6 @@ export default class Nav extends React.Component {
     const navClass = collapsed ? 'collapse' : '';
 
     return (
-
       <nav className="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div className="container">
           <div className="navbar-header">
@@ -40,7 +39,7 @@ export default class Nav extends React.Component {
               <li><Link to="/customQuiz">Build a New Quiz</Link></li>
               <li><Link to="/groupQuiz">Group Quiz</Link></li>
               <li><Link to="/login">Log In</Link></li>
-              <li><Link to="/auth/signout">Log Out</Link></li>
+              <li><a href="/auth/signout">Log Out</a></li>
             </ul>
           </div>
         </div>

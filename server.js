@@ -1,4 +1,4 @@
-// setup - dependencies
+// Setup - dependencies
 const express = require('express');
 const app = express();
 // var app = require('express')();
@@ -74,7 +74,7 @@ passport.use('local-login', new LocalStrategy({
     });
 }));
 
-// routes
+// Routes
 // Connect controller methods to their corresponding routes
 router.get('/categories', controller.categories.get);
 router.get('/questions', controller.questions.get);
@@ -83,9 +83,6 @@ router.post('/questions', controller.questions.post);
 router.post('/auth/login', passport.authenticate('local-login'), controller.user.login);
 router.post('/auth/signup', controller.user.post);
 router.get('/auth/signout', controller.user.logout);
-
-
-
 
 // port
 app.set('port', 1337);
