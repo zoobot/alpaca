@@ -27,11 +27,11 @@ export default class Homepage extends React.Component {
         <div className="row main-content">
           <div className="col-md-4 text-left">
               <h2>What is CrashCourse?</h2>
-              <p>Learning is life! It should be yours too. Crashcours is the way, the path that will lead you to golden garden where you will find a secret box of prizes</p>
+              <p>Learning is life! It should be yours too. Crashcourse is the way, the path that will lead you to golden garden where you will find a secret box of prizes</p>
           </div>
           <div className="col-md-4 text-left">
               <h2>Why use CrashCourse?</h2>
-              <p>I am a total potato lately. Because I am here taking the great crashcourse. Delightful? Yes</p>
+              <p>I am a total potato lately. Because I am here taking the great crashcourse. Delightful? Yes. My mind has quizzes in it.</p>
           </div>
           <div className="col-md-4 text-left">
               <h2>Get started</h2>
