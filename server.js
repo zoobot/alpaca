@@ -84,7 +84,7 @@ router.post('/auth/login', passport.authenticate('local-login'), controller.user
 router.post('/auth/signup', controller.user.post);
 router.get('/auth/signout', controller.user.logout);
 
-// port
+// Port
 app.set('port', 1337);
 // If we are being run directly, run the server.
 if (!module.parent) {
