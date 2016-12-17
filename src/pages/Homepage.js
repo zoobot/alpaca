@@ -27,15 +27,15 @@ export default class Homepage extends React.Component {
         <div className="row main-content">
           <div className="col-md-4 text-left">
               <h2>What is CrashCourse?</h2>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe rem nisi accusamus error velit animi non ipsa placeat. Recusandae, suscipit, soluta quibusdam accusamus a veniam quaerat eveniet eligendi dolor consectetur.</p>
+              <p>Learning is life! It should be yours too. Crashcours is the way, the path that will lead you to golden garden where you will find a secret box of prizes</p>
           </div>
           <div className="col-md-4 text-left">
               <h2>Why use CrashCourse?</h2>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe rem nisi accusamus error velit animi non ipsa placeat. Recusandae, suscipit, soluta quibusdam accusamus a veniam quaerat eveniet eligendi dolor consectetur.</p>
+              <p>I am a total potato lately. Because I am here taking the great crashcourse. Delightful? Yes</p>
           </div>
           <div className="col-md-4 text-left">
               <h2>Get started</h2>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe rem nisi accusamus error velit animi non ipsa placeat. Recusandae, suscipit, soluta quibusdam accusamus a veniam quaerat eveniet eligendi dolor consectetur.</p>
+              <p>Join me in the wonderful world of online learning. Do not go outside right now. Please.</p>
               <Link to="/signup">Learn More</Link>
           </div>
         </div>
