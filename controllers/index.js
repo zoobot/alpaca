@@ -100,6 +100,7 @@ module.exports = {
 
 
 
+
     //   console.log('POST REQUEST TO QUESTIONS');
     //   console.log(JSON.stringify(req.body));
     //   if (req.body.delete === true) {
@@ -121,6 +122,13 @@ module.exports = {
     //       res.sendStatus(201);
     //     });
     //   }
+    },
+    getPublic: function(req, res) {
+      db.Test.findAll({
+        where: {
+          public: true
+        }
+      }).then(results => res.json(results));
     }
 
   },
@@ -169,6 +177,11 @@ module.exports = {
       }).then(function(results) {
         res.sendStatus(201);
       });
+    }
+  },
+  categories: {
+    get: function(req, res) {
+      res.json( ['English', 'History', 'Math', 'Science'] );
     }
   }
 };
