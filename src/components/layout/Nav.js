@@ -20,7 +20,6 @@ export default class Nav extends React.Component {
     const navClass = collapsed ? 'collapse' : '';
 
     return (
-
       <nav className="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div className="container">
           <div className="navbar-header">
