@@ -133,6 +133,13 @@ module.exports = {
 
   },
   user: {
+    get: function(req, res) {
+      db.User.find({
+        where: {
+          id: req.query.id
+        }
+      }).then(result => res.json(result.firstname + ' ' + result.lastname));
+    },
     authenticate: function (attempted, password) {
       return bcrypt.compareSync(attempted, password);
     },

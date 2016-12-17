@@ -10,8 +10,24 @@ export default class PublicQuizItem extends React.Component {
       testId: this.props.data.id,
       quizName: this.props.data.test,
       category: this.props.data.category,
-      createdBy: this.props.data.userId
+      createdBy: ''
     };
+  }
+
+  componentDidMount() {
+    this.getAuthorName();
+  }
+
+  getAuthorName() {
+    axios.get('/user', {
+      params: {
+        id: this.props.data.userId
+      }
+    }).then(name => {
+      this.setState({
+        createdBy: name.data
+      });
+    });
   }
 
   handleSave() {
@@ -46,7 +62,7 @@ export default class PublicQuizItem extends React.Component {
           </Modal.Header>
           <Modal.Body>
             <h4>Author</h4>
-            <p>someUser</p>
+            <p>{this.state.createdBy}</p>
             <h4>Questions</h4>
             <p>Question #1</p>
             <p>Question #2</p>
