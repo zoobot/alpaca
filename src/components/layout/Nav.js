@@ -2,8 +2,8 @@ import React from 'react';
 import { Link } from 'react-router';
 
 export default class Nav extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       collapsed: true,
     };
@@ -15,6 +15,7 @@ export default class Nav extends React.Component {
   }
 
   render() {
+    console.log('NAV PROPS', this.props);
     const { location } = this.props;
     const { collapsed } = this.state;
     const navClass = collapsed ? 'collapse' : '';

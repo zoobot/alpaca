@@ -5,7 +5,6 @@ import { Link, hashHistory } from 'react-router';
 export default class Login extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       username: '',
       password: ''
@@ -13,12 +12,14 @@ export default class Login extends React.Component {
   }
 
   sendCredentials() {
+    let userUpdate = this.props.updateUser;
     axios.post('/auth/login', {
       username: this.state.username,
       password: this.state.password,
     })
     .then(function(result) {
-      hashHistory.push('/settings');
+      userUpdate(result.data);
+      hashHistory.push('/prebuiltQuiz');
     })
     .catch(function(err) {
       console.error('ERROR', err);
