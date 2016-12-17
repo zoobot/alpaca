@@ -79,7 +79,9 @@ passport.use('local-login', new LocalStrategy({
 router.get('/user', controller.user.get);
 router.get('/categories', controller.categories.get);
 router.get('/questions', controller.questions.get);
-router.get('/questions/public', controller.questions.getPublic);
+router.get('/quizzes/public', controller.quizzes.getPublic);
+router.get('/quizzes', controller.quizzes.get);
+router.post('/saveQuiz', controller.questions.save);
 router.post('/questions', controller.questions.post);
 router.post('/auth/login', passport.authenticate('local-login'), controller.user.login);
 router.post('/auth/signup', controller.user.post);

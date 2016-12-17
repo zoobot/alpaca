@@ -27,7 +27,7 @@ export default class PublicQuizList extends React.Component {
   }
 
   getQuizes() {
-    axios.get('/questions/public')
+    axios.get('/quizzes/public')
       .then(response => {
         var temp = {};
         this.state.categories.map(category => temp[category] = []);

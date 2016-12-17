@@ -10,12 +10,14 @@ export default class PublicQuizItem extends React.Component {
       testId: this.props.data.id,
       quizName: this.props.data.test,
       category: this.props.data.category,
-      createdBy: ''
+      createdBy: '',
+      questions: []
     };
   }
 
   componentDidMount() {
     this.getAuthorName();
+    this.getQuizQuestions();
   }
 
   getAuthorName() {
@@ -30,9 +32,22 @@ export default class PublicQuizItem extends React.Component {
     });
   }
 
+  getQuizQuestions() {
+    axios.get('/questions', {
+      params: {
+        testId: this.state.testId
+      }
+    }).then(questions => {
+      this.setState({
+        questions: questions.data
+      });
+    });
+  }
+
   handleSave() {
-    // API call to save test to database for user.
-    // Test ID is located at this.state.testId
+    axios.post('/saveQuiz', {
+      testId: this.state.testId
+    }).then(console.log);
   }
 
   close() {
@@ -64,10 +79,7 @@ export default class PublicQuizItem extends React.Component {
             <h4>Author</h4>
             <p>{this.state.createdBy}</p>
             <h4>Questions</h4>
-            <p>Question #1</p>
-            <p>Question #2</p>
-            <p>Question #3</p>
-            <p>...</p>
+            {this.state.questions.map(question => <p>{question.name}</p>)}
           </Modal.Body>
           <Modal.Footer>
             <Button bsStyle="success" onClick={this.handleSave.bind(this)}>Save</Button>
