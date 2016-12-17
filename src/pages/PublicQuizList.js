@@ -1,13 +1,14 @@
 import React from 'react';
 import axios from 'axios';
 import PublicQuizItem from './PublicQuizItem';
-import {ButtonGroup} from 'react-bootstrap';
+import { ButtonGroup, ListGroup, Panel } from 'react-bootstrap';
 
 export default class PublicQuizList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      quizNames: [],
+      quizNames: {},
+      categories: ['English', 'History', 'Math', 'Science']
     };
   }
 
@@ -18,8 +19,11 @@ export default class PublicQuizList extends React.Component {
   getQuizes() {
     axios.get('/questions')
       .then(response => {
+        var temp = {};
+        this.state.categories.map(category => temp[category] = []);
+        response.data.map(test => temp[test.category].push(test));
         this.setState({
-          quizNames: response.data
+          quizNames: temp
         });
       })
       .catch(function(err) {
@@ -31,23 +35,21 @@ export default class PublicQuizList extends React.Component {
     return (
       <div className="App">
         <h1>Public Quizzes</h1>
-        <div className="row list-group">
-            {this.state.quizNames.map((test, i) =>
-              <PublicQuizItem key={i} data={test} />
-            )}
-        </div>
+        {this.state.categories.map((category, i) => {
+          return (
+            <Panel collapsible header={category} key={i}>
+              {
+                this.state.quizNames[category]
+                ?
+                this.state.quizNames[category].map((test, i) =>
+                  <PublicQuizItem fill key={i} data={test}/>)
+                :
+                null
+              }
+            </Panel>
+          );
+        })}
       </div>
     );
   }
 }
-{/*<button
-          onClick={() => this.handleSelect(test[1])}
-          type="button"
-          key={i}
-          className="list-group-item">
-          {test[0]}
-          <span
-            onClick={() => this.handleSave(test[1])}
-            className="glyphicon glyphicon-floppy-disk pull-right">
-          </span>
-        </button>*/}

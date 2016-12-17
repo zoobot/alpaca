@@ -12,7 +12,6 @@ export default class PublicQuizItem extends React.Component {
       category: this.props.data.category,
       createdBy: this.props.data.userId
     };
-    console.log(this.props);
   }
 
   handleSave() {
