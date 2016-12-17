@@ -76,7 +76,9 @@ passport.use('local-login', new LocalStrategy({
 
 // routes
 // Connect controller methods to their corresponding routes
+router.get('/categories', controller.categories.get);
 router.get('/questions', controller.questions.get);
+router.get('/questions/public', controller.questions.getPublic);
 router.post('/questions', controller.questions.post);
 router.post('/auth/login', passport.authenticate('local-login'), controller.user.login);
 router.post('/auth/signup', controller.user.post);

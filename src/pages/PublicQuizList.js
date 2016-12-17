@@ -8,16 +8,26 @@ export default class PublicQuizList extends React.Component {
     super(props);
     this.state = {
       quizNames: {},
-      categories: ['English', 'History', 'Math', 'Science']
+      categories: []
     };
   }
 
   componentDidMount() {
+    this.getCategories();
     this.getQuizes();
   }
 
+  getCategories() {
+    axios.get('/categories')
+      .then(response => {
+        this.setState({
+          categories: response.data
+        });
+      });
+  }
+
   getQuizes() {
-    axios.get('/questions')
+    axios.get('/questions/public')
       .then(response => {
         var temp = {};
         this.state.categories.map(category => temp[category] = []);
