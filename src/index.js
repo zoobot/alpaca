@@ -12,6 +12,7 @@ import PublicQuizList from './pages/PublicQuizList';
 import Layout from './pages/Layout';
 import Homepage from './pages/Homepage';
 import Settings from './pages/Settings';
+import GroupQuiz from './pages/GroupQuiz';
 
 const app = document.getElementById('root');
 
@@ -23,6 +24,7 @@ ReactDOM.render(
       <Route path="/prebuiltQuiz" name="prebuiltQuiz" component={PrebuiltQuiz}></Route>
       <Route path="/publicQuizzes" name="publicQuizzes" component={PublicQuizList}></Route>
       <Route path="/customQuiz" name="customQuiz" component={CustomQuiz}></Route>
+      <Route path="/groupQuiz" name="groupQuiz" component={GroupQuiz}></Route>
       <Route path="/signup" name="signup" component={SignUp}></Route>
       <Route path="/login" name="login" component={Login}></Route>
     </Route>

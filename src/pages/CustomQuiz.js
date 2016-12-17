@@ -13,7 +13,7 @@ export default class CustomQuiz extends React.Component {
       option2: '',
       option3: '',
       testName: '',
-      currQuesList: [], // populated with data from server in this.getTestNameCurrentQuestions
+      currQuesList: []
     };
 
     this.clearForm = this.clearForm.bind(this);
@@ -28,12 +28,13 @@ export default class CustomQuiz extends React.Component {
       wrong1: this.state.option1,
       wrong2: this.state.option2,
       wrong3: this.state.option3,
-      testName: this.state.testName,
+      testName: this.state.testName
     })
-    .then(() => {
+    .then((response) => {
+      console.log("this is happening", response);
       this.clearForm();
     });
-    this.getTestNameCurrentQuestions();
+    //this.getTestNameCurrentQuestions();
   }
 
   clearForm() {
@@ -83,32 +84,33 @@ export default class CustomQuiz extends React.Component {
       testName: e.target.value,
       currQuesList: [],
     }, this.getTestNameCurrentQuestions);
+    console.log(this.state.testName);
   }
 
-  getTestNameCurrentQuestions() {
-    var entries;
-    var config = {
-      params: {
-        ID: this.state.testName
-      }
-    };
+  // getTestNameCurrentQuestions() {
+  //   var entries;
+  //   var config = {
+  //     params: {
+  //       ID: this.state.testName
+  //     }
+  //   };
 
-    axios.get('/questions', config)
-      .then(response => {
-        // console.log('line 75 custom quiz, res.body = ' + JSON.stringify(response.data, null, 2));
-        entries = response.data;
-        var temp = [];
-        entries.forEach(entry => {
-          temp.push(entry.name);
-        });
-        this.setState({
-          currQuesList: temp,
-        });
-      })
-      .catch(function(err) {
-        console.error(err);
-      });
-  }
+  //   axios.get('/questions', config)
+  //     .then(response => {
+  //       // console.log('line 75 custom quiz, res.body = ' + JSON.stringify(response.data, null, 2));
+  //       entries = response.data;
+  //       var temp = [];
+  //       entries.forEach(entry => {
+  //         temp.push(entry.name);
+  //       });
+  //       this.setState({
+  //         currQuesList: temp,
+  //       });
+  //     })
+  //     .catch(function(err) {
+  //       console.error(err);
+  //     });
+  // }
 
   handleRemove(e) {
     // do something here that posts a delete request to server
@@ -139,7 +141,7 @@ export default class CustomQuiz extends React.Component {
                 <div className="form-group row">
                   <label className="col-xs-4 col-form-label" htmlFor="testName">Test Name</label>
                   <div className="col-xs-8">
-                    <input name="testName" type="text" className="form-control" placeholder="Enter the Name of this Test" onChange={this.handleTestName.bind(this)}></input>
+                    <input name="testName" value={this.state.testName} type="text" className="form-control" placeholder="Enter the Name of this Test" onChange={this.handleTestName.bind(this)}></input>
                   </div>
                 </div>
 

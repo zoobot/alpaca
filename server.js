@@ -1,13 +1,26 @@
 // setup - dependencies
 const express = require('express');
 const app = express();
+// var app = require('express')();
 const router = require('express').Router();
 const morgan = require('morgan');
 const parser = require('body-parser');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
+var cors = require('cors');
 const db = require('./db');
 const controller = require('./controllers');
+
+//socketIO
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+//socket server-side event emitters
+// const io = require('./controllers/socketConfig');
+require ('./controllers/socketConfig')(io);
+
+io.on('connection', function(socket) {
+  console.log('a user connected');
+});
 
 // config - middleware
 app.use(morgan('dev'));
@@ -69,11 +82,14 @@ router.post('/auth/login', passport.authenticate('local-login'), controller.user
 router.post('/auth/signup', controller.user.post);
 router.get('/auth/signout', controller.user.logout);
 
+
+
+
 // port
 app.set('port', 1337);
 // If we are being run directly, run the server.
 if (!module.parent) {
-  app.listen(app.get('port'));
+  server.listen(app.get('port'));
   console.log('Listening on', app.get('port'));
 }
 

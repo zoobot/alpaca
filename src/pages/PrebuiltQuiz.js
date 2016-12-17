@@ -16,7 +16,7 @@ export default class PrebuiltQuiz extends React.Component {
       questions: [],
       answers: [],
       randomAnswers: [],
-      index: null,
+      index: 0,
       timeCount: 15, // used for countdown
       correctAns: 0, // number of correct and wrong answer submissions for percent
       wrongAns: 0,
@@ -33,7 +33,7 @@ export default class PrebuiltQuiz extends React.Component {
 
   componentDidMount() {
     this.getQuizes(); // generate drop down list to select test
-    this.GetQuestions();
+    // this.GetQuestions();
   }
 
   // get all quizzes from server
@@ -42,6 +42,7 @@ export default class PrebuiltQuiz extends React.Component {
       .then(response => {
         console.log(response);
         var entries = response.data;
+        console.log(entries);
         var temp = [];
         entries.forEach(entry => {
           // Makes sure there is no duplicates.
@@ -81,9 +82,10 @@ export default class PrebuiltQuiz extends React.Component {
 
   // grabs all the questions based on the selected quiz from the drop down list
   GetQuestions() {
+    console.log('HERE IS QUIZ ID FROM THE FRONTEND: ', this.state.selectedQuiz);
     var config = {
       params: {
-        ID: this.state.quizName
+        ID: this.state.selectedQuiz
       }
     };
     var questions;
@@ -152,6 +154,7 @@ export default class PrebuiltQuiz extends React.Component {
   // answer set is displayed
   handleQuestionChange() {
     var questions = this.state.questions;
+    console.log("HERE ARE THE QUESTIONS: ", questions);
     var index = this.state.index;
     if (index === this.state.questions.length) {
       this.handleEndQuiz();
@@ -213,12 +216,21 @@ export default class PrebuiltQuiz extends React.Component {
   handleDelete(id) {
     // This is where the request to delete and quiz will be sent from.
     // id is the testId to be deleted.
+    axios.post('/questions', {ID: id})
+      .then(response =>{
+        console.log(response);
+        this.getQuizes();
+      })
+      .catch(function(err) {
+        console.error(err);
+      });
   }
 
   startQuiz() {
     if (this.state.selectedQuiz !== null) {
       // Send out API call to get Quiz questions.
       // Once we have the question change the state.
+      this.GetQuestions();
       this.setState({
         takingQuiz: true,
         startTimer: true
@@ -268,7 +280,7 @@ export default class PrebuiltQuiz extends React.Component {
                   onClick={() => this.handleSelect(test[1])}
                   type="button"
                   key={i}
-                  className={`list-group-item ${this.state.selectedQuiz === test[1] ? "list-group-item-success" : ""}`}>
+                  className={`list-group-item ${this.state.selectedQuiz === test[1] ? 'list-group-item-success' : ''}`}>
                   {test[0]}
                   <span
                     onClick={() => this.handleDelete(test[1])}
