@@ -45,11 +45,24 @@ module.exports = {
     },
     // in quiz Creation page, POST request will add an entry into database
     post: function (req, res) {
-      //query findOrCreate Test table
-      var user = req.session.passport.user;
-      db.Test.findOrCreate({
-        where: {test: req.body.testName}
-      })
+      if (req.body.ID !== undefined) {
+        db.UsersTests.destroy({
+          where: {
+            testId: req.body.ID,
+            userId: req.session.passport.user
+          }
+        })
+        .then(function(response) {
+          console.log("HERE ARE THE DELETE RESPONSE: ",response);
+          res.json(response);
+        });
+
+      } else {
+        //query findOrCreate Test table
+        var user = req.session.passport.user;
+        db.Test.findOrCreate({
+          where: {test: req.body.testName}
+        })
         .spread( (test, created) => {
           // console.log("this is test data", test);
           // console.log("this is req", req.session);
@@ -83,6 +96,8 @@ module.exports = {
         .then( () => {
           res.sendStatus(201);
         });
+      }
+
 
 
     //   console.log('POST REQUEST TO QUESTIONS');

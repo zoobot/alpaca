@@ -216,6 +216,14 @@ export default class PrebuiltQuiz extends React.Component {
   handleDelete(id) {
     // This is where the request to delete and quiz will be sent from.
     // id is the testId to be deleted.
+    axios.post('/questions', {ID: id})
+      .then(response =>{
+        console.log(response);
+        this.getQuizes();
+      })
+      .catch(function(err) {
+        console.error(err);
+      });
   }
 
   startQuiz() {
