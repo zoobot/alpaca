@@ -38,7 +38,7 @@ export default class PrebuiltQuiz extends React.Component {
 
   // get all quizzes from server
   getQuizes() {
-    axios.get('/questions')
+    axios.get('/quizzes')
       .then(response => {
         console.log(response);
         var entries = response.data;
