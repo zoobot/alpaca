@@ -16,7 +16,7 @@ export default class PrebuiltQuiz extends React.Component {
       questions: [],
       answers: [],
       randomAnswers: [],
-      index: null,
+      index: 0,
       timeCount: 15, // used for countdown
       correctAns: 0, // number of correct and wrong answer submissions for percent
       wrongAns: 0,
@@ -82,9 +82,10 @@ export default class PrebuiltQuiz extends React.Component {
 
   // grabs all the questions based on the selected quiz from the drop down list
   GetQuestions() {
+    console.log('HERE IS QUIZ ID FROM THE FRONTEND: ', this.state.selectedQuiz);
     var config = {
       params: {
-        ID: this.state.quizName
+        ID: this.state.selectedQuiz
       }
     };
     var questions;
@@ -153,6 +154,7 @@ export default class PrebuiltQuiz extends React.Component {
   // answer set is displayed
   handleQuestionChange() {
     var questions = this.state.questions;
+    console.log("HERE ARE THE QUESTIONS: ", questions);
     var index = this.state.index;
     if (index === this.state.questions.length) {
       this.handleEndQuiz();
@@ -220,6 +222,7 @@ export default class PrebuiltQuiz extends React.Component {
     if (this.state.selectedQuiz !== null) {
       // Send out API call to get Quiz questions.
       // Once we have the question change the state.
+      this.GetQuestions();
       this.setState({
         takingQuiz: true,
         startTimer: true

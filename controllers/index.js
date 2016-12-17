@@ -9,19 +9,22 @@ module.exports = {
     get: function (req, res) {
       // console.log('===> MAKING GET REQUEST FOR QUESTIONS, REQ.PARAMS = ', JSON.parse(JSON.stringify(req.query)).ID)
       // console.log('===> MAKING GET REQUEST FOR QUESTIONS, REQ.PARAMS = ', req.query.ID)
+      console.log("QUERY ID is: ", req.query.ID);
       if (req.query.ID !== undefined) {
         console.log('INSIDE IF STATEMENT');
-        db.Test.findAll({
+        db.Question.findAll({
           where: {
-            testName: req.query.ID
+            testId: req.query.ID,
+            userId: req.session.passport.user
           }
         })
         .then(function(questions) {
+          console.log("HERE ARE THE QUIZ QUESTIONS: ",questions);
           res.json(questions);
         });
       } else {
         db.UsersTests.findAll({
-          where: {userId: req.session.user}
+          where: {userId: req.session.passport.user}
         }).then( (testIds) => {
           var tests = [];
           testIds.forEach( (entry) => {
@@ -34,6 +37,7 @@ module.exports = {
               }
             }
           }).then(function(testsArray) {
+            // console.log(testsArray);
             res.json(testsArray);
           });
         });
