@@ -90,6 +90,7 @@ router.get('/auth/signout', controller.user.logout);
 // Port
 app.set('port', 1337);
 // If we are being run directly, run the server.
+// need server.listen instead of app.listen for socket.io
 if (!module.parent) {
   server.listen(app.get('port'));
   console.log('Listening on', app.get('port'));

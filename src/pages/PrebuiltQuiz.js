@@ -27,14 +27,64 @@ export default class PrebuiltQuiz extends React.Component {
       score: 0,
       completedQuiz: false, // when true ternary in render shows the summary component
       selectedQuiz: null,
-      takingQuiz: false
+      takingQuiz: false,
+      //groupQuiz stuff
+      url: null,
+      group: true,
+      room: 'Penquiz Challenge',
+      currentQuiz: null,
+      playing: false,
+      showQuiz: false
     };
+    socket.on('join', (room) => this.handleSelect(room));
   }
 
   componentDidMount() {
     this.getQuizes(); // generate drop down list to select test
     // this.GetQuestions();
+
+    var self = this;
+    socket.emit( 'join', self.state.room );
+    socket.on('loadUrl', function(data){
+      console.log('url loaded on clientside');
+      self.setState({ url : data });
+    });
+
+    socket.on('startQuiz', function(){
+      console.log('quiz started on clientside');
+
+
+      self.setState({ started: !self.state.started});
+      PrebuiltQuiz.setState({ selectedQuiz: 'planet' });
+      console.log('selectedQuiz on clientside',PrebuiltQuiz.selectedQuiz);
+
+    });
   }
+  //socket io stuff
+   handleChangeRoom(e) {
+      this.setState({[e.target.name]: e.target.value});
+    }
+    handleChangeQuiz(e) {
+      this.setState({[e.target.name]: e.target.value});
+    }
+
+    emitRoomName(room){
+      console.log('room name emit triggered');
+      socket.emit('createRoom', {room});
+      console.log('this is the room', room);
+    }
+
+    emitQuizUs() {
+      socket.emit('quizUs');
+      console.log('quizUs emitted from client-side!');
+    }
+
+    emitLoadUrl(url) {
+      console.log('clientemit triggered');
+      socket.emit('URL', {url});
+      console.log(url);
+    }
+    //end of socketIO stuff
 
   // get all quizzes from server
   getQuizes() {
