@@ -59,7 +59,7 @@ export default class Login extends React.Component {
             <button className="btn btn-sm btn-primary" type="button" onClick={this.sendCredentials.bind(this)}>Log In</button>
           </form>
           <div className="row text-center">
-            <small >Don't have an account?<Link to="/signup"> Sign Up</Link></small>
+            <small>Don't have an account?<Link to="/signup"> Sign Up</Link></small>
           </div>
         </div>
       </div>
