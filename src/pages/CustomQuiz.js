@@ -13,10 +13,20 @@ export default class CustomQuiz extends React.Component {
       option2: '',
       option3: '',
       testName: '',
-      currQuesList: []
+      currQuesList: [],
+      selectedCategory: '',
+      categoryList: []
     };
 
     this.clearForm = this.clearForm.bind(this);
+  }
+
+  componentDidMount() {
+    axios.get('/categories')
+      .then(console.log);
+      //   () => {
+      //   this.setState({ categoryList: })
+      // })
   }
 
   // this actually pushes the current values to the server using a post request
@@ -74,6 +84,12 @@ export default class CustomQuiz extends React.Component {
   handleWrong3(e) {
     this.setState({
       option3: e.target.value
+    });
+  }
+
+  handleSelectedCategory(e) {
+    this.setState({
+      selectedCategory: e.target.value
     });
   }
 
@@ -178,6 +194,19 @@ export default class CustomQuiz extends React.Component {
                   <label className="col-xs-4 col-form-label" htmlFor="option3">Wrong 3</label>
                   <div className="col-xs-8">
                     <input name="option3" type="text" ref="wrong3" className="form-control" placeholder="Enter an answer" onChange={this.handleWrong3.bind(this)}></input>
+                  </div>
+                </div>
+
+                <div className="form-group row">
+                  <label className="col-xs-4 col-form-label" htmlFor="category">Select a Category</label>
+                  <div className="col-xs-8">
+                    <select onChange={this.handleSelectedCategory.bind(this)} value={this.state.selectedCategory}>
+                      {
+                        this.state.categoryList.map( (category) => {
+                          return(<option value={category}>{category}</option>);
+                        })
+                      }
+                    </select>
                   </div>
                 </div>
 
