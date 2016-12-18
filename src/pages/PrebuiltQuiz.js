@@ -61,30 +61,30 @@ export default class PrebuiltQuiz extends React.Component {
     });
   }
   //socket io stuff
-   handleChangeRoom(e) {
-      this.setState({[e.target.name]: e.target.value});
-    }
-    handleChangeQuiz(e) {
-      this.setState({[e.target.name]: e.target.value});
-    }
+  handleChangeRoom(e) {
+    this.setState({[e.target.name]: e.target.value});
+  }
+  handleChangeQuiz(e) {
+    this.setState({[e.target.name]: e.target.value});
+  }
 
-    emitRoomName(room){
-      console.log('room name emit triggered');
-      socket.emit('createRoom', {room});
-      console.log('this is the room', room);
-    }
+  emitRoomName(room){
+    console.log('room name emit triggered');
+    socket.emit('createRoom', {room});
+    console.log('this is the room', room);
+  }
 
-    emitQuizUs() {
-      socket.emit('quizUs');
-      console.log('quizUs emitted from client-side!');
-    }
+  emitQuizUs() {
+    socket.emit('quizUs');
+    console.log('quizUs emitted from client-side!');
+  }
 
-    emitLoadUrl(url) {
-      console.log('clientemit triggered');
-      socket.emit('URL', {url});
-      console.log(url);
-    }
-    //end of socketIO stuff
+  emitLoadUrl(url) {
+    console.log('clientemit triggered');
+    socket.emit('URL', {url});
+    console.log(url);
+  }
+  //end of socketIO stuff
 
   // get all quizzes from server
   getQuizes() {
