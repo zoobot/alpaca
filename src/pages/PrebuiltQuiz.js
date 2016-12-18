@@ -131,11 +131,11 @@ export default class PrebuiltQuiz extends React.Component {
   }
 
   // grabs all the questions based on the selected quiz from the drop down list
-  GetQuestions() {
+  GetQuestions(callback) {
     console.log('HERE IS QUIZ ID FROM THE FRONTEND: ', this.state.selectedQuiz);
     var config = {
       params: {
-        ID: this.state.selectedQuiz
+        testId: this.state.selectedQuiz
       }
     };
     var questions;
@@ -143,9 +143,11 @@ export default class PrebuiltQuiz extends React.Component {
     axios.get('/questions', config)
       .then(response =>{
         questions = response.data;
+        console.log(questions);
         this.setState({
-          questions: this.state.questions.concat(questions),
-        }, this.handleQuestionChange);
+          questions: questions,
+        });
+        callback();
       })
       .catch(function(err) {
         console.error(err);
@@ -227,6 +229,17 @@ export default class PrebuiltQuiz extends React.Component {
     this.setState({
       score: percent,
       completedQuiz: true,
+      name: '',
+      correct: '',
+      wrong1: '',
+      wrong2: '',
+      wrong3: '',
+      questions: [],
+      answers: [],
+      randomAnswers: [],
+      index: 0,
+      correctAns: 0,
+      wrongAns: 0
     });
   }
 
@@ -280,11 +293,14 @@ export default class PrebuiltQuiz extends React.Component {
     if (this.state.selectedQuiz !== null) {
       // Send out API call to get Quiz questions.
       // Once we have the question change the state.
-      this.GetQuestions();
-      this.setState({
-        takingQuiz: true,
-        startTimer: true
+      this.GetQuestions(() => {
+        this.setState({
+          takingQuiz: true,
+          startTimer: true
+        }, this.handleQuestionChange.bind(this));
       });
+
+
     }
   }
 
