@@ -31,7 +31,7 @@ export default class CustomQuiz extends React.Component {
       testName: this.state.testName
     })
     .then((response) => {
-      console.log("this is happening", response);
+      console.log('this is happening', response);
       this.clearForm();
     });
     //this.getTestNameCurrentQuestions();
@@ -130,7 +130,6 @@ export default class CustomQuiz extends React.Component {
   }
 
   render() {
-    console.log('QUIIIIIIIIZ', this.props.location.query.user.firstname);
     return (
       <div className="container customquiz">
         <div className="col-md-12">

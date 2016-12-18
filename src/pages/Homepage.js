@@ -13,9 +13,6 @@ export default class Homepage extends React.Component {
     };
   }
 
-
-
-
   render() {
     console.log('homepage');
     return (
@@ -39,9 +36,6 @@ export default class Homepage extends React.Component {
               <Link to="/signup">Learn More</Link>
           </div>
         </div>
-
-
-
 
       </div>
     );
