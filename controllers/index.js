@@ -30,7 +30,7 @@ module.exports = {
           }
         })
         .then(function(response) {
-          console.log("HERE ARE THE DELETE RESPONSE: ",response);
+          console.log('HERE ARE THE DELETE RESPONSE:', response);
           res.json(response);
         });
       } else {
