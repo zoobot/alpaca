@@ -366,7 +366,7 @@ export default class PrebuiltQuiz extends React.Component {
             {
               this.state.showTimer ? <h2>{this.state.timeCount}</h2> : null
             }
-            <div id='ground'></div>
+            <div id='ground'>Merry Merry</div>
           </div>
       }
       </div>
