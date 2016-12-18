@@ -9,7 +9,7 @@ module.exports = {
     get: function (req, res) {
       // console.log('===> MAKING GET REQUEST FOR QUESTIONS, REQ.PARAMS = ', JSON.parse(JSON.stringify(req.query)).ID)
       // console.log('===> MAKING GET REQUEST FOR QUESTIONS, REQ.PARAMS = ', req.query.ID)
-      console.log("QUERY ID is: ", req.query.ID);
+      console.log('QUERY ID is: ', req.query.ID);
       if (req.query.ID !== undefined) {
         console.log('INSIDE IF STATEMENT');
         db.Question.findAll({
@@ -19,7 +19,7 @@ module.exports = {
           }
         })
         .then(function(questions) {
-          console.log("HERE ARE THE QUIZ QUESTIONS: ",questions);
+          console.log('HERE ARE THE QUIZ QUESTIONS: ', questions);
           res.json(questions);
         });
       } else {
@@ -53,7 +53,7 @@ module.exports = {
           }
         })
         .then(function(response) {
-          console.log("HERE ARE THE DELETE RESPONSE: ",response);
+          console.log('HERE ARE THE DELETE RESPONSE: ', response);
           res.json(response);
         });
 
