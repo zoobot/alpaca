@@ -6,7 +6,21 @@ export default class Nav extends React.Component {
     super(props);
     this.state = {
       collapsed: true,
+      time: new Date()
     };
+  }
+  greeting(time) {
+    let timeOfDay = {
+      noon: new Date().setHours(12, 0, 0),
+      evening: new Date().setHours(17, 0, 0)
+    };
+    if (time < timeOfDay.noon) {
+      return 'morning';
+    } else if (time < timeOfDay.evening) {
+      return 'afternoon';
+    } else {
+      return 'evening';
+    }
   }
 
   toggleCollapse() {
@@ -15,7 +29,6 @@ export default class Nav extends React.Component {
   }
 
   render() {
-    console.log('NAV PROPS', this.props);
     const { location } = this.props;
     const { collapsed } = this.state;
     const navClass = collapsed ? 'collapse' : '';
@@ -36,11 +49,12 @@ export default class Nav extends React.Component {
             { this.props.user ? (
               <ul className="nav navbar-nav navbar-right">
                 <li><Link to="/prebuiltQuiz" onClick={this.toggleCollapse.bind(this)}>Quizzes</Link></li>
+                <li><Link to="/publicQuizzes">Public Quizzes</Link></li>
+                <li><Link to="/groupQuizzes">Group Quizzes</Link></li>
                 <li><Link to="/customQuiz">Build Quiz</Link></li>
                 <li><a href="/auth/signout">Log Out</a></li>
-                <li><Link to="/settings">Hi, {this.props.user.firstname}!</Link></li>
+                <li><Link to="/settings">Good {this.greeting(this.state.time)} {this.props.user.firstname.replace(/\b\w/g, l => l.toUpperCase())}!</Link></li>
               </ul>
-
             ) : (
               <ul className="nav navbar-nav navbar-right">
                 <li><Link to="/login" onClick={this.toggleCollapse.bind(this)}>Log In</Link></li>
