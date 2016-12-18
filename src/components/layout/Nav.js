@@ -50,7 +50,7 @@ export default class Nav extends React.Component {
               <ul className="nav navbar-nav navbar-right">
                 <li><Link to="/prebuiltQuiz" onClick={this.toggleCollapse.bind(this)}>Quizzes</Link></li>
                 <li><Link to="/publicQuizzes">Public Quizzes</Link></li>
-                <li><Link to="/groupQuizzes">Group Quizzes</Link></li>
+                <li><Link to="/groupQuiz">Group Quizzes</Link></li>
                 <li><Link to="/customQuiz">Build Quiz</Link></li>
                 <li><a href="/auth/signout">Log Out</a></li>
                 <li><Link to="/settings">Good {this.greeting(this.state.time)} {this.props.user.firstname.replace(/\b\w/g, l => l.toUpperCase())}!</Link></li>
