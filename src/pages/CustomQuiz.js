@@ -23,10 +23,9 @@ export default class CustomQuiz extends React.Component {
 
   componentDidMount() {
     axios.get('/categories')
-      .then(console.log);
-      //   () => {
-      //   this.setState({ categoryList: })
-      // })
+      .then( (categories) => {
+        this.setState({ categoryList: categories.data });
+      });
   }
 
   // this actually pushes the current values to the server using a post request
