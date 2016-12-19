@@ -366,23 +366,15 @@ export default class PrebuiltQuiz extends React.Component {
           <div>
             <h1>{this.state.name}</h1>
             {/* animations for buttons */}
-            <VelocityTransitionGroup
-              enter={{
-                animation: 'transition.slideDownBigOut',
-                duration: 20000,
-                opacity: [1, 1],
-                translateY: 200
-              }}
-              leave={{opacity: [1, 1]}}
-            >
+
               {this.state.randomAnswers.map(option => <button onClick={this.handleClick.bind(this)} className={`answer btn btn-lg ${option}`}>{option}</button> )}
-            </VelocityTransitionGroup>
+
 
             <div className="container"></div>
             {
               this.state.showTimer ? <h2>{this.state.timeCount}</h2> : null
             }
-            <div id='ground'>Merry Merry</div>
+
           </div>
       }
       </div>

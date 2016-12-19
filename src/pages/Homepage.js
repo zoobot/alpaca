@@ -33,7 +33,7 @@ export default class Homepage extends React.Component {
           <div className="col-md-4 text-left">
               <h2>Get started</h2>
               <p>Join me in the wonderful world of online learning. Do not go outside right now. Please. Just stay here for a long  long time.</p>
-              <Link to="/signup">Learn More</Link>
+              <Link to="/signup">Sign Up Now</Link>
           </div>
         </div>
 
