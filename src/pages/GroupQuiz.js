@@ -12,7 +12,7 @@ export default class GroupQuiz extends React.Component {
       room: 'Penquiz Challenge',
       currentQuiz: null,
       started: false,
-      showQuiz: false
+      showQuiz: true
     };
     this.handleChangeRoom = this.handleChangeRoom.bind(this);
   }
@@ -26,17 +26,12 @@ export default class GroupQuiz extends React.Component {
 
     socket.on('startQuiz', function(){
       console.log('quiz started on clientside');
-
-
       self.setState({ started: !self.state.started});
-      PrebuiltQuiz.setState({ selectedQuiz: 'planet' });
-      console.log('selectedQuiz on clientside',PrebuiltQuiz.selectedQuiz);
-
     });
   }
 
   handleChangeRoom(e) {
-    this.setState({[e.target.name]: e.target.value});
+    this.setState({room: e.target.value});
   }
   handleChangeQuiz(e) {
     this.setState({[e.target.name]: e.target.value});
