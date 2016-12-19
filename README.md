@@ -4,9 +4,9 @@
 
 ## Team
 
-  - __Product Owner__: Prithvi A
-  - __Scrum Master__: Brittany
-  - __Development Team Members__: Andrew Cookro, Cal Holloway
+  - __Product Owner__: Howard Xue
+  - __Scrum Master__: Johanna Tchon
+  - __Development Team Members__: Rose Meyers, Doug Vaughn, Joel Bojorquez
 
 ## Table of Contents
 
